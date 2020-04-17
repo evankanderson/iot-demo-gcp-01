@@ -1,0 +1,17 @@
+apiVersion: eventing.knative.dev/v1alpha1
+kind: Trigger
+metadata:
+  
+  name: on-onboard-device-type-onboard-device
+  
+spec:
+  filter:
+    attributes:
+      
+      type: onboard-device
+      
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1alpha1
+      kind: Service
+      name: on-onboard-device

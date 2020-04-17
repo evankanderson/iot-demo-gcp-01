@@ -13,6 +13,7 @@ from krules_env import publish_results_errors, publish_results_all, publish_resu
 
 from cloudstorage.drivers.google import GoogleStorageDriver
 from krules_cloudstorage.csv import ProcessCSV_AsDict
+from krules_cloudstorage import DeleteBlob
 
 # import pprint
 # results_rx_factory().subscribe(
@@ -55,6 +56,25 @@ rulesdata = [
                 )
             ],
         },
+    },
+
+    {
+        rulename: 'on-csv-upload-import-devices-error',
+        subscribe_to: "on-gcs-csv-upload-errors",
+        ruledata: {
+            filters: [
+                CheckPayloadMatchOne("$.rule_name", "on-csv-upload-import-devices")
+            ],
+            processing: [
+                # reject file
+                DeleteBlob(
+                    driver=GoogleStorageDriver,
+                    bucket=lambda payload: payload["payload"]["bucket"],
+                    path=lambda payload: payload["payload"]["name"]
+                )
+            ]
+
+        }
     },
 
 ]

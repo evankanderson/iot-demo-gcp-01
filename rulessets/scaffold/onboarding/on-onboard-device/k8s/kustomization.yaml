@@ -1,0 +1,5 @@
+commonLabels:
+  rulesset: on-onboard-device
+resources:
+- service.yaml
+- triggers.yaml
