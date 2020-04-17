@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: config-krules-subjects-redis
+data:
+  url: cmVkaXM6Ly9yZWRpcy8w   # redis://redis/0

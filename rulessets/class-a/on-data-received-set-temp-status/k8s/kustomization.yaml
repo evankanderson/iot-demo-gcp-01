@@ -1,0 +1,4 @@
+commonLabels:
+  rulesset: on-data-received-set-temp-status
+resources:
+- service.yaml

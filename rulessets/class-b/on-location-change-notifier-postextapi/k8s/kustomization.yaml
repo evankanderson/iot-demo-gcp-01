@@ -1,0 +1,4 @@
+commonLabels:
+  rulesset: on-location-change-notifier-postextapi
+resources:
+- service.yaml
