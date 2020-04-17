@@ -10,7 +10,7 @@ DEPLOYED_VERSION=`krules-py rulesset check-version iot-demo-gcp-01-base --less-t
 
 all: .lastResources
 
-VERSION: app/*.py
+VERSION: Dockerfile app/*.py
 	cp VERSION VERSION.tmp && \
 	bumpversion --current-version ${BASE_VERSION}  patch VERSION.tmp --allow-dirty && \
 	docker build -t  ${DOCKER_REGISTRY}/iot-demo-gcp-01-base:${BASE_TMP_VERSION}  -t ${DOCKER_REGISTRY}/iot-demo-gcp-01-base:latest . && \

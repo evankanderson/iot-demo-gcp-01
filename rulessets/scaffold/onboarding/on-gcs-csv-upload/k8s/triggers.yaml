@@ -1,0 +1,13 @@
+apiVersion: eventing.knative.dev/v1alpha1
+kind: Trigger
+metadata:
+  name: on-gcs-csv-upload-errors
+spec:
+  filter:
+    attributes:
+      type: on-gcs-csv-upload-errors
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1alpha1
+      kind: Service
+      name: on-gcs-csv-upload

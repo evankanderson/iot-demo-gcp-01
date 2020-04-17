@@ -1,0 +1,5 @@
+commonLabels:
+  rulesset: on-gcs-csv-upload
+resources:
+- service.yaml
+- triggers.yaml
