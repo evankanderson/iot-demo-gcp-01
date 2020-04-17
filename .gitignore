@@ -1,7 +1,7 @@
-<<<<<<< HEAD
 .project/workspace.yaml
 */.lastResources
-=======
+*.DS_Store
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -117,4 +117,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
->>>>>>> f76820218d46c1581d736e76d04b7de0dc54c876
