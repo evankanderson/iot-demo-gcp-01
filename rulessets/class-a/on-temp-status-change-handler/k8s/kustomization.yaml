@@ -1,4 +1,0 @@
-commonLabels:
-  rulesset: on-temp-status-change-handler
-resources:
-- service.yaml

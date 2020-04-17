@@ -1,3 +1,0 @@
-FROM {{ dockerRegistry }}/{{ projectName }}-base:latest
-
-ADD ./app /app
