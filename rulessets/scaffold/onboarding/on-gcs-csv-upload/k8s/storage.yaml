@@ -1,5 +1,5 @@
 
-apiVersion: pubsub.cloud.google.com/v1alpha1
+apiVersion: events.cloud.google.com/v1alpha1
 kind: Storage
 metadata:
   name: csv-import-storage-source
