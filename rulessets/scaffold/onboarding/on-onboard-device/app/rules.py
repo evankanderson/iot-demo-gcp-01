@@ -25,15 +25,16 @@ results_rx_factory().subscribe(
 rulesdata = [
 
     """
-    My wonderful rule description
+    Set the basic properties of the device and the initial status as 'READY'
+    The status will become 'ACTIVE' upon receipt of the first message
     """,
     {
         rulename: "on-onboard-device-store-properties",
         subscribe_to: "onboard-device",
         ruledata: {
             filters: [
-                CheckPayloadMatchOne("data"),
-                CheckPayloadMatchOne("class"),
+                CheckPayloadMatchOne("$.data"),
+                CheckPayloadMatchOne("$.class"),
             ],
             processing: [
                 FlushSubject(),

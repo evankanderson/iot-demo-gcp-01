@@ -29,7 +29,7 @@ results_rx_factory().subscribe(
 rulesdata = [
 
     """
-    My wonderful rule description
+    Subscribe to storage, import csv
     """,
     {
         rulename: "on-csv-upload-import-devices",
