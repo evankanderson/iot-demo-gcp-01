@@ -1,5 +1,7 @@
 from dependency_injector import providers as providers
 from krules_core.providers import subject_storage, subject_storage_factory
+import jsonpath_rw_ext as jp
+from krules_core.arg_processors import processors
 
 
 def init():
@@ -10,13 +12,13 @@ def init():
     )
 
     # # Redis subjects storage support
-    # import os
-    # from redis_subjects_storage import storage_impl
-    # subject_storage_redis = providers.Factory(storage_impl.SubjectsRedisStorage)
-    #
-    # subject_storage_factory.override(
-    #     providers.Factory(lambda x: subject_storage_redis(x, os.environ["KRULES_SUBJECTS_REDIS_URL"]))
-    # )
+    import os
+    from redis_subjects_storage import storage_impl
+    subject_storage_redis = providers.Factory(storage_impl.SubjectsRedisStorage)
+
+    subject_storage_factory.override(
+        providers.Factory(lambda x: subject_storage_redis(x, os.environ["KRULES_SUBJECTS_REDIS_URL"]))
+    )
 
     # # MongoDB subjects storage support
     # import yaml, os
@@ -43,3 +45,31 @@ def init():
     #                                   client_args=client_args, client_kwargs=client_kwargs,
     #                                   use_atomic_ops_collection=True))
     # )
+
+
+class JPPayloadMatchBase:
+
+    def __init__(self, expr):
+        self._expr = expr
+
+    @classmethod
+    def interested_in(cls, arg):
+        return isinstance(arg, cls)
+
+
+# class JPMatch(JPPayloadMatchBase):
+#
+#     @staticmethod
+#     def process(instance, arg):
+#         return jp.match(arg._expr, instance.payload)
+
+
+class JPMatchOne(JPPayloadMatchBase):
+
+    @staticmethod
+    def process(instance, arg):
+        return jp.match1(arg._expr, instance.payload)
+
+
+processors.append(JPMatchOne)
+# processors.append(JPMatch)

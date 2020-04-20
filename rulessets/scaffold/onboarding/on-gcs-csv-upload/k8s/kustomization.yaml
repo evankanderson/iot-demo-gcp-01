@@ -3,3 +3,4 @@ commonLabels:
 resources:
 - service.yaml
 - triggers.yaml
+- storage.yaml
