@@ -33,8 +33,7 @@ rulesdata = [
         subscribe_to: "onboard-device",
         ruledata: {
             filters: [
-                CheckPayloadMatchOne("$.data"),
-                CheckPayloadMatchOne("$.class"),
+                IsTrue(lambda payload: "data" in payload and "class" in payload),
             ],
             processing: [
                 FlushSubject(),
