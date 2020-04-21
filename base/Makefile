@@ -8,7 +8,7 @@ DEPLOYED_VERSION=`krules-py rulesset check-version iot-demo-gcp-01-base --less-t
 
 .PHONY: clean
 
-all: .lastResources
+all: push .lastResources
 
 VERSION: Dockerfile app/*.py
 	cp VERSION VERSION.tmp && \
@@ -20,10 +20,6 @@ push: VERSION
 	docker push ${DOCKER_REGISTRY}/iot-demo-gcp-01-base:${BASE_VERSION}
 
 .lastResources: VERSION k8s/*
-	krules-py rulesset check-version iot-demo-gcp-01-base --less-than `cat VERSION` > .UPDATE_NEEDED
-	if [[ `cat .UPDATE_NEEDED` = 1 ]]; then \
-		make push; \
-	fi && \
 	kustomize build k8s  | kubectl apply -n ${NAMESPACE}  -f - \
 	&& echo `date` > ".lastResources" && \
 	rm .UPDATE_NEEDED

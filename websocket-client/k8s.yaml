@@ -1,0 +1,60 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iot-web-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: iot-web-app
+  template:
+    metadata:
+      labels:
+        app: iot-web-app
+    spec:
+      containers:
+        - name: iot-web-app
+          image: "lorenzocampo/iot-web-app"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: iot-web-app
+              containerPort: 3000
+
+---
+apiVersion: cloud.google.com/v1beta1
+kind: BackendConfig
+metadata:
+  name: iot-web-app-config
+spec:
+  timeoutSec: 1000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: iot-web-app
+  annotations:
+    beta.cloud.google.com/backend-config: '{"ports": {"80":"iot-web-app-config"}}'
+  labels:
+    app: iot-web-app
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP
+  selector:
+    app: iot-web-app
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: iot-web-app-ingress
+spec:
+  rules:
+    - http:
+        paths:
+        - path: /
+          backend:
+            serviceName: iot-web-app
+            servicePort: 80

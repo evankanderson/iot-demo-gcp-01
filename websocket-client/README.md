@@ -31,6 +31,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 
 
 docker build -t <usernam>/iot-web-app .
-docker run -it -p 8080:80 -d <username>/iot-web-app
+docker run -it -p 8080:3000 -d <username>/iot-web-app
 go to http://127.0.0.1:8080
 
+kubectl port-forward --namespace kr-dev-03 svc/iot-web-app 3000:80
