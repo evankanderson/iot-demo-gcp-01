@@ -1,0 +1,9 @@
+kinds:
+  - serving.knative.dev/v1alpha1:Service
+  - apps/v1:Deployment
+labelsMatch:
+  - airspot.krules.dev/type: ^rulesset$
+patch:
+  metadata:
+    labels:
+      app-domain: metrics

@@ -1,0 +1,5 @@
+commonLabels:
+  airspot.krules.dev/rulesset: metrics-got-errors
+resources:
+- service.yaml
+- triggers.yaml

@@ -3,4 +3,6 @@ resources:
 - brokers.yaml
 - event-display.yaml
 - triggers.yaml
+- config-krules-subjects-mongodb-auth.yaml
+- config-krules-subjects-redis-auth.yaml
 - config-krules-subjects-redis.yaml
