@@ -25,4 +25,4 @@ push: VERSION
 	rm .UPDATE_NEEDED
 
 clean:
-	rm -f VERSION.tmp .lastResources .UPDATE_NEEDED
+	rm -f VERSION.tmp .lastResources
