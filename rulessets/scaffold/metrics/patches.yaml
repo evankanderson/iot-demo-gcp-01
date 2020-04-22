@@ -7,3 +7,16 @@ patch:
   metadata:
     labels:
       app-domain: metrics
+  spec:
+    template:
+      spec:
+        containers:
+          - patch__0:
+              volumeMounts:
+                - name: config-krules-metrics-mongodb-volume
+                  mountPath: /krules/config/scaffold/metrics/mongodb
+
+        volumes:
+          - name: config-krules-metrics-mongodb-volume
+            configMap:
+              name: config-krules-metrics-mongodb
