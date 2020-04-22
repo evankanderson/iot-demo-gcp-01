@@ -1,0 +1,17 @@
+apiVersion: serving.knative.dev/v1alpha1
+kind: Service
+metadata:
+  name: pubsub-source-subscription
+  labels:
+    airspot.krules.dev/type: rulesset
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: "1"
+      labels:
+        airspot.krules.dev/type: rulesset
+        airspot.krules.dev/rulesset: pubsub-source-subscription
+    spec:
+      containers:
+        - name: rulesset

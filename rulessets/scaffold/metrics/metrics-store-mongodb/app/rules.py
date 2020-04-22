@@ -21,9 +21,9 @@ from pymongo import IndexModel, HASHED
 # results_rx_factory().subscribe(
 #     on_next=publish_results_all,
 # )
-results_rx_factory().subscribe(
-    on_next=publish_results_errors,
-)
+# results_rx_factory().subscribe(
+#     on_next=publish_results_errors,
+# )
 
 DBNAME = "kr-dev-03"
 mongodb_settings = subjects_redis_storage_settings = settings_factory() \
