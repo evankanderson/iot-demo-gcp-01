@@ -21,8 +21,7 @@ push: VERSION
 
 .lastResources: VERSION k8s/*
 	kustomize build k8s  | kubectl apply -n ${NAMESPACE}  -f - \
-	&& echo `date` > ".lastResources" && \
-	rm .UPDATE_NEEDED
+	&& echo `date` > ".lastResources"
 
 clean:
 	rm -f VERSION.tmp .lastResources

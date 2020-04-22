@@ -1,4 +1,4 @@
-FROM gcr.io/airspot/rulesset-image-base:0.1.17
+FROM gcr.io/airspot/rulesset-image-base:0.1.22
 
 ADD ./app /app
 
@@ -18,3 +18,7 @@ RUN pip install cloudstorage[google]
 ADD ./krules-cloudstorage /krules-cloudstorage
 RUN python /krules-cloudstorage/setup.py install
 RUN mv /krules-cloudstorage/krules_cloudstorage app/
+
+ADD ./krules-mongodb /krules-mongodb
+RUN python /krules-mongodb/setup.py install
+RUN mv /krules-mongodb/krules_mongodb app/

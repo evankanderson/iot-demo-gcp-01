@@ -61,7 +61,7 @@ rulesdata = [
             processing: [
                 PyCall(
                     requests.post,
-                    os.environ["SLACK_CHANNEL_URL"],
+                    os.environ.get("SLACK_CHANNEL_URL"),
                     json=lambda jp_match1, payload: {
                         "text": ":ambulance: *{}[{}]* \n```\n{}\n```".format(
                             payload["_event_info"]["Source"],
