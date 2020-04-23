@@ -2,3 +2,4 @@ commonLabels:
   airspot.krules.dev/rulesset: pubsub-source-subscription
 resources:
 - service.yaml
+- pullsubscription.yaml
