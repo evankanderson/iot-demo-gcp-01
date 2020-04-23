@@ -1,0 +1,13 @@
+apiVersion: eventing.knative.dev/v1alpha1
+kind: Trigger
+metadata:
+  name: scheduler-type-schedule-message
+spec:
+  filter:
+    attributes:
+      type: schedule-message
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1alpha1
+      kind: Service
+      name: scheduler

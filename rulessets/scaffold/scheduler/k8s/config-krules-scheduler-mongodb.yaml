@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-krules-scheduler-mongodb
+data:
+  config_subjects_mongodb.yaml: |
+    client_args:
+      - mongodb.address
+    client_kwargs:
+      authSource: admin
+      username: username
+      password: $KRULES_SUBJECTS_MONGODB_PASSWORD
+    database: kr-dev-03
+    collection: scheduler
+    use_atomic_ops_collection: false
