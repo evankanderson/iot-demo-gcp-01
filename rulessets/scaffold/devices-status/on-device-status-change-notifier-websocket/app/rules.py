@@ -1,3 +1,4 @@
+from app_functions import WebsocketNotificationEventClass
 from krules_core.base_functions import *
 
 from krules_core import RuleConst as Const, messages
@@ -26,14 +27,6 @@ results_rx_factory().subscribe(
 )
 
 
-class NotificationEventClass(object):
-
-    CHEERING = "cheering"
-    WARNING = "warning"
-    CRITICAL = "critical"
-    NORMAL = "normal"
-
-
 class WebsocketDevicePublishMessage(RuleFunctionBase):
 
     def execute(self, _payload):
@@ -57,14 +50,14 @@ rulesdata = [
         subscribe_to: messages.SUBJECT_PROPERTY_CHANGED,
         ruledata: {
             filters: [
-                CheckPayloadMatchOne("$.value", "READY"),
+                IsTrue(lambda payload: payload["value"] == "READY"),
             ],
             processing: [
                 WebsocketDevicePublishMessage(lambda subject: {
                     "device_class": subject.get_ext("deviceclass"),
                     "status": subject.status,
                     "event": "Onboarded",
-                    "event_class": NotificationEventClass.CHEERING,
+                    "event_class": WebsocketNotificationEventClass.CHEERING,
                 })
             ],
         },
@@ -78,13 +71,13 @@ rulesdata = [
         subscribe_to: messages.SUBJECT_PROPERTY_CHANGED,
         ruledata: {
             filters: [
-                CheckPayloadMatchOne("$.value",  "ACTIVE"),
+                IsTrue(lambda payload: payload["value"] == "ACTIVE"),
             ],
             processing: [
                 WebsocketDevicePublishMessage({
                     "status": "ACTIVE",
                     "event": "Receiving data",
-                    "event_class": NotificationEventClass.NORMAL,
+                    "event_class": WebsocketNotificationEventClass.NORMAL,
                 })
 
             ],
@@ -99,13 +92,13 @@ rulesdata = [
         subscribe_to: messages.SUBJECT_PROPERTY_CHANGED,
         ruledata: {
             filters: [
-                CheckPayloadMatchOne("$.value",  "INACTIVE"),
+                IsTrue(lambda payload: payload["value"] == "INACTIVE"),
             ],
             processing: [
                 WebsocketDevicePublishMessage({
                     "status": "INACTIVE",
                     "event": "No more data receiving",
-                    "event_class": NotificationEventClass.WARNING,
+                    "event_class": WebsocketNotificationEventClass.WARNING,
                 })
 
             ],

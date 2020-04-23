@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from dateutil.parser import parse
-from krules_mongodb import WithDatabase, WithCollection, MongoDBFind, MongoDBDeleteByIds
+from app_functions.mongodb import WithDatabase, WithCollection, MongoDBFind, MongoDBDeleteByIds
 
 from krules_core.base_functions import *
 
@@ -32,8 +32,7 @@ results_rx_factory().subscribe(
 )
 
 INDEXES = [IndexModel([("message", TEXT), ("subject", TEXT)])]
-mongodb_settings = subjects_redis_storage_settings = settings_factory() \
-    .get("scaffold").get("scheduler").get("mongodb")
+mongodb_settings = settings_factory().get("apps").get("scheduler").get("mongodb")
 
 rulesdata = [
 

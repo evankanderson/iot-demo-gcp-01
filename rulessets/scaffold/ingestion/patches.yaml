@@ -14,7 +14,7 @@ patch:
           - patch__0:
               volumeMounts:
                 - name: config-krules-ingestion-mongodb-volume
-                  mountPath: /krules/config/scaffold/ingestion/mongodb
+                  mountPath: /krules/config/apps/ingestion/mongodb
 
         volumes:
           - name: config-krules-ingestion-mongodb-volume

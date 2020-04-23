@@ -10,7 +10,6 @@ import os
 
 
 def init():
-    pass
     # This is an inmemory database and it is not persistent
     # you probably want to comment out this configuration and enable a more appropriate one
     # Redis subjects storage support

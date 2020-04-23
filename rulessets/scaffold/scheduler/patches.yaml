@@ -14,7 +14,7 @@ patch:
           - patch__0:
               volumeMounts:
                 - name: config-krules-scheduler-mongodb-volume
-                  mountPath: /krules/config/scaffold/scheduler/mongodb
+                  mountPath: /krules/config/apps/scheduler/mongodb
 
         volumes:
           - name: config-krules-scheduler-mongodb-volume

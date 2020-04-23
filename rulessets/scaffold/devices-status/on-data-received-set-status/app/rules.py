@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 
+from app_functions import Schedule
 from krules_core.base_functions import *
 
 from krules_core import RuleConst as Const
@@ -10,7 +11,7 @@ ruledata = Const.RULEDATA
 filters = Const.FILTERS
 processing = Const.PROCESSING
 
-from krules_core.providers import results_rx_factory, subject_factory, message_router_factory
+from krules_core.providers import results_rx_factory
 from krules_env import publish_results_errors, publish_results_all, publish_results_filtered
 
 # import pprint
@@ -25,38 +26,6 @@ results_rx_factory().subscribe(
 )
 
 
-class IsEnabled(RuleFunctionBase):
-
-    def execute(self):
-
-        return getattr(self.subject, "m_isEnabled", False)
-
-
-class Schedule(RuleFunctionBase):
-
-    def execute(self, message=None, subject=None, payload=None, when=lambda _: datetime.now(), replace=False):
-
-        if message is None:
-            message = self.message
-        if subject is None:
-            subject = self.subject
-        if payload is None:
-            payload = self.payload
-
-        if str(self.subject) != str(subject):
-            subject = subject_factory(str(subject), event_info=self.subject.event_info())
-
-        if callable(when):
-            when = when(self)
-        if type(when) is not str:
-            when = when.isoformat()
-
-        new_payload = {"message": message, "subject": str(subject), "payload": payload, "when": when, "replace": replace}
-
-        message_router_factory().route("schedule-message", subject, new_payload,
-                                       dispatch_policy=DispatchPolicyConst.DIRECT)
-
-
 rulesdata = [
 
     """
@@ -68,9 +37,6 @@ rulesdata = [
         rulename: "on-data-received-set-status-active",
         subscribe_to: "data-received",
         ruledata: {
-            filters: [
-                IsEnabled(),
-            ],
             processing: [
                 SetSubjectProperty("status", 'ACTIVE'),
                 Schedule("set-device-status", payload={'value': 'INACTIVE'},

@@ -14,7 +14,7 @@ patch:
           - patch__0:
               volumeMounts:
                 - name: config-krules-metrics-mongodb-volume
-                  mountPath: /krules/config/scaffold/metrics/mongodb
+                  mountPath: /krules/config/apps/metrics/mongodb
 
         volumes:
           - name: config-krules-metrics-mongodb-volume

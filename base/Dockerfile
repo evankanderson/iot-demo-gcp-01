@@ -14,11 +14,3 @@ RUN pip install -e git+https://krules_guest:kr-guest-sDDsvCXA@gitlab.com/krules/
 
 RUN pip install cloudstorage
 RUN pip install cloudstorage[google]
-
-ADD ./krules-cloudstorage /krules-cloudstorage
-RUN python /krules-cloudstorage/setup.py install
-RUN mv /krules-cloudstorage/krules_cloudstorage app/
-
-ADD ./krules-mongodb /krules-mongodb
-RUN python /krules-mongodb/setup.py install
-RUN mv /krules-mongodb/krules_mongodb app/

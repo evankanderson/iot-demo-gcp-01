@@ -12,8 +12,8 @@ from krules_core.providers import results_rx_factory, subject_factory, message_r
 from krules_env import publish_results_errors, publish_results_all, publish_results_filtered
 
 from cloudstorage.drivers.google import GoogleStorageDriver
-from krules_cloudstorage.csv import ProcessCSV_AsDict
-from krules_cloudstorage import DeleteBlob
+from app_functions.cloudstorage.csv import ProcessCSV_AsDict
+from app_functions.cloudstorage import DeleteBlob
 
 # import pprint
 # results_rx_factory().subscribe(

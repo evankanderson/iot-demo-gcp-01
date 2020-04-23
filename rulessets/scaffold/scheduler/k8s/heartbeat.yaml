@@ -9,7 +9,7 @@ spec:
         - image: ade8850/heartbeats-007104604b758f52b70a5535e662802b:latest
           name: heartbeats
           args:
-            - --period=10
+            - --period=2
             - --eventType=krules.heartbeat
           env:
             - name: POD_NAME

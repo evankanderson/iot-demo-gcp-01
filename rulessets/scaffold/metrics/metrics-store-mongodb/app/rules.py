@@ -10,7 +10,7 @@ processing = Const.PROCESSING
 
 from krules_core.providers import results_rx_factory, settings_factory
 from krules_env import publish_results_errors, publish_results_all, publish_results_filtered
-from krules_mongodb import WithDatabase, WithCollection, MongoDBInsertOne
+from app_functions.mongodb import WithDatabase, WithCollection, MongoDBInsertOne
 from dateutil.parser import parse
 from pymongo import IndexModel, HASHED
 
@@ -25,8 +25,7 @@ from pymongo import IndexModel, HASHED
 #     on_next=publish_results_errors,
 # )
 
-mongodb_settings = subjects_redis_storage_settings = settings_factory() \
-        .get("scaffold").get("metrics").get("mongodb")
+mongodb_settings = settings_factory().get("apps").get("metrics").get("mongodb")
 
 rulesdata = [
 

@@ -28,22 +28,6 @@ results_rx_factory().subscribe(
 )
 
 
-class IsNotOutdated(RuleFunctionBase):
-
-    def execute(self, key_func):
-
-        key = key_func(self)
-        event_time = parse(self.payload["_event_info"]["Time"])
-        last_received = getattr(self.subject, key, None)
-        if last_received is None:
-            setattr(self.subject, key, event_time.isoformat())
-            return True
-        if parse(last_received) > event_time:
-            return False
-        setattr(self.subject, key, event_time.isoformat())
-        return True
-
-
 rulesdata = [
 
     """
@@ -54,11 +38,8 @@ rulesdata = [
         rulename: "on-data-received-propagate",
         subscribe_to: "google.pubsub.topic.publish",
         ruledata: {
-            filters: [
-                IsNotOutdated(lambda payload: "data-received#{}".format(payload.get("deviceid")))
-            ],
             processing: [
-                SetSubjectPropertySilently("m_lastSeen", datetime.now().isoformat()),
+                SetSubjectPropertySilently("lastSeen", datetime.now().isoformat()),
                 Route("data-received",                                  # message
                       lambda payload: payload.pop("deviceid"),          # subject
                       lambda payload: {                                 # payload
