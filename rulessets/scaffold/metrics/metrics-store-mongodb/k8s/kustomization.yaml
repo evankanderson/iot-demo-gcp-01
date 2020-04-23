@@ -2,4 +2,5 @@ commonLabels:
   airspot.krules.dev/rulesset: metrics-store-mongodb
 resources:
 - service.yaml
-- config-krules-metrics-mongodb.yaml
+bases:
+- ../../../../../base/k8s/metrics

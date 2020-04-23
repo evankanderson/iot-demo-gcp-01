@@ -12,7 +12,8 @@ from krules_core.providers import results_rx_factory, settings_factory
 from krules_env import publish_results_errors, publish_results_all, publish_results_filtered
 
 from app_functions.mongodb import WithDatabase, WithCollection
-from pymongo import IndexModel, HASHED
+from app_functions.mongodb import set_client as set_mongodb_client
+from pymongo import IndexModel, HASHED, MongoClient
 from dateutil.parser import parse
 
 # import pprint
@@ -27,6 +28,9 @@ results_rx_factory().subscribe(
 )
 
 mongodb_settings = settings_factory().get("apps").get("ingestion").get("mongodb")
+set_mongodb_client(
+    MongoClient(*mongodb_settings.get("client_args", ()), **mongodb_settings.get("client_kwargs", {}))
+)
 
 rulesdata = [
 

@@ -2,11 +2,12 @@ from datetime import datetime
 
 from dateutil.parser import parse
 from app_functions.mongodb import WithDatabase, WithCollection, MongoDBFind, MongoDBDeleteByIds
+from app_functions.mongodb import set_client as set_mongodb_client
 
 from krules_core.base_functions import *
 
 from krules_core import RuleConst as Const
-from pymongo import IndexModel, HASHED, TEXT
+from pymongo import IndexModel, TEXT, MongoClient
 
 rulename = Const.RULENAME
 subscribe_to = Const.SUBSCRIBE_TO
@@ -33,6 +34,9 @@ results_rx_factory().subscribe(
 
 INDEXES = [IndexModel([("message", TEXT), ("subject", TEXT)])]
 mongodb_settings = settings_factory().get("apps").get("scheduler").get("mongodb")
+set_mongodb_client(
+    MongoClient(*mongodb_settings.get("client_args", ()), **mongodb_settings.get("client_kwargs", {}))
+)
 
 rulesdata = [
 

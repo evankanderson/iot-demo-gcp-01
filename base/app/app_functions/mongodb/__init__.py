@@ -5,17 +5,17 @@ from bson import ObjectId
 
 from krules_core.base_functions import RuleFunctionBase
 
+_client = {}
 
-def get_client():
 
-    config_path = os.environ.get("MONGODB_CONFIG_PATH", "/krules/config/mongodb/config_krules_mongodb.yaml")
-    mongo_config = yaml.load(open(config_path, "r"), Loader=yaml.FullLoader)
+def get_client(name="default"):
 
-    # TODO
-    # return MongoClient(
-    #     **mongo_config['MONGODB_CONNECT_KWARGS']
-    # )
-    return MongoClient(mongo_config["CONNECTION_STRING"])
+    return _client[name]
+
+
+def set_client(client, name="default"):
+    _client[name] = client
+
 
 def get_dbname(dbinfo):  # TODO: generalize
 
@@ -24,6 +24,7 @@ def get_dbname(dbinfo):  # TODO: generalize
     database = "%s%s" % (database_prefix, database_name)
 
     return database
+
 
 class WithDatabase(RuleFunctionBase):
 

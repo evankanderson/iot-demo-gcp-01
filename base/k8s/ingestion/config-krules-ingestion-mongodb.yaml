@@ -12,4 +12,3 @@ data:
       password: $KRULES_SUBJECTS_MONGODB_PASSWORD
     database: kr-dev-03
     collection: data-received
-    use_atomic_ops_collection: false

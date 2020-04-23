@@ -11,8 +11,9 @@ processing = Const.PROCESSING
 from krules_core.providers import results_rx_factory, settings_factory
 from krules_env import publish_results_errors, publish_results_all, publish_results_filtered
 from app_functions.mongodb import WithDatabase, WithCollection, MongoDBInsertOne
+from app_functions.mongodb import set_client as set_mongodb_client
 from dateutil.parser import parse
-from pymongo import IndexModel, HASHED
+from pymongo import IndexModel, HASHED, MongoClient
 
 # import pprint
 # results_rx_factory().subscribe(
@@ -26,6 +27,9 @@ from pymongo import IndexModel, HASHED
 # )
 
 mongodb_settings = settings_factory().get("apps").get("metrics").get("mongodb")
+set_mongodb_client(
+    MongoClient(*mongodb_settings.get("client_args", ()), **mongodb_settings.get("client_kwargs", {}))
+)
 
 rulesdata = [
 
