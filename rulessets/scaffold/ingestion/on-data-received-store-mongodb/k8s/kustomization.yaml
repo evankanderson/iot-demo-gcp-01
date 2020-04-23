@@ -2,4 +2,5 @@ commonLabels:
   airspot.krules.dev/rulesset: on-data-received-store-mongodb
 resources:
 - service.yaml
-  - config-krules-ingestion-mongodb.yaml
+- config-krules-ingestion-mongodb.yaml
+- triggers.yaml

@@ -18,8 +18,8 @@ patch:
             configMap:
               name: config-krules
 
-## uncomment if subjects redis storage backend enabled
-#---
+---
+## MongoDB subjects backend
 #kinds:
 #  - serving.knative.dev/v1alpha1:Service
 #labelsMatch:
@@ -31,8 +31,43 @@ patch:
 #        containers:
 #          - patch__0:
 #              env:
-#                - name: KRULES_SUBJECTS_REDIS_URL
+#                - name: KRULES_SUBJECTS_MONGODB_PASSWORD
 #                  valueFrom:
 #                    secretKeyRef:
-#                      name: config-krules-subjects-redis
-#                      key: url
+#                      name: config-krules-subjects-mongodb-auth
+#                      key: password
+#              volumeMounts:
+#                - name: config-krules-subjects-mongodb-volume
+#                  mountPath: /krules/config/subjects-backends/mongodb
+#
+#        volumes:
+#          - name: config-krules-subjects-mongodb-volume
+#            configMap:
+#              name: config-krules-subjects-mongodb
+#---
+
+# Redis subjects backend
+kinds:
+  - serving.knative.dev/v1alpha1:Service
+labelsMatch:
+  - airspot.krules.dev/type: ^rulesset$
+patch:
+  spec:
+    template:
+      spec:
+        containers:
+          - patch__0:
+              env:
+                - name: KRULES_SUBJECTS_REDIS_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: config-krules-subjects-redis-auth
+                      key: password
+              volumeMounts:
+                - name: config-krules-subjects-redis-volume
+                  mountPath: /krules/config/subjects-backends/redis
+
+        volumes:
+          - name: config-krules-subjects-redis-volume
+            configMap:
+              name: config-krules-subjects-redis

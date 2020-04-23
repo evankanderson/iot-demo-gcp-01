@@ -25,7 +25,6 @@ from pymongo import IndexModel, HASHED
 #     on_next=publish_results_errors,
 # )
 
-DBNAME = "kr-dev-03"
 mongodb_settings = subjects_redis_storage_settings = settings_factory() \
         .get("scaffold").get("metrics").get("mongodb")
 

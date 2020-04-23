@@ -3,7 +3,6 @@ import jsonpath_rw_ext as jp
 
 from krules_core.arg_processors import processors
 from krules_core.providers import (
-    subject_storage,
     subject_storage_factory,
     settings_factory
 )
@@ -11,13 +10,9 @@ import os
 
 
 def init():
-
+    pass
     # This is an inmemory database and it is not persistent
     # you probably want to comment out this configuration and enable a more appropriate one
-    subject_storage_factory.override(
-       providers.Factory(lambda x: subject_storage(x, ":memory:"))
-    )
-
     # Redis subjects storage support
     subjects_redis_storage_settings = settings_factory() \
         .get("subjects-backends") \

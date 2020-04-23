@@ -1,5 +1,5 @@
 .project/workspace.yaml
-*/.lastResources
+*/*.lastResources
 *.DS_Store
 
 # Byte-compiled / optimized / DLL files
