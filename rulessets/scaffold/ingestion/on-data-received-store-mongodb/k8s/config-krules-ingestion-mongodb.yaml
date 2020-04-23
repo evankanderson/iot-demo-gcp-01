@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: config-krules-metrics-mongodb
+  name: config-krules-ingestion-mongodb
 data:
   config_subjects_mongodb.yaml: |
     client_args:
