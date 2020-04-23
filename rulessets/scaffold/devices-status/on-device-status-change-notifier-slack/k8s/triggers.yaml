@@ -1,0 +1,16 @@
+apiVersion: eventing.knative.dev/v1alpha1
+kind: Trigger
+metadata:
+  name: on-device-status-change-notifier-slack-propchange-status
+  
+spec:
+  filter:
+    attributes:
+      type: subject-property-changed
+      propertyname: status
+      
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1alpha1
+      kind: Service
+      name: on-device-status-change-notifier-slack

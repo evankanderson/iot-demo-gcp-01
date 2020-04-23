@@ -1,0 +1,23 @@
+apiVersion: serving.knative.dev/v1alpha1
+kind: Service
+metadata:
+  name: on-device-status-change-notifier-slack
+  labels:
+    airspot.krules.dev/type: rulesset
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: "1"
+      labels:
+        airspot.krules.dev/type: rulesset
+        airspot.krules.dev/rulesset: on-device-status-change-notifier-slack
+    spec:
+      containers:
+        - name: rulesset
+          env:
+            - name: SLACK_CHANNEL_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: config-notifications
+                  key: slack.device_status_change.url
