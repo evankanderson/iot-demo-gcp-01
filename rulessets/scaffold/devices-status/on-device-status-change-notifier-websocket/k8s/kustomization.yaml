@@ -1,0 +1,5 @@
+commonLabels:
+  airspot.krules.dev/rulesset: on-device-status-change-notifier-websocket
+resources:
+- service.yaml
+- triggers.yaml

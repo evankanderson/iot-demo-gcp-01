@@ -1,0 +1,25 @@
+apiVersion: serving.knative.dev/v1alpha1
+kind: Service
+metadata:
+  name: on-device-status-change-notifier-websocket
+  labels:
+    airspot.krules.dev/type: rulesset
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: "1"
+      labels:
+        airspot.krules.dev/type: rulesset
+        airspot.krules.dev/rulesset: on-device-status-change-notifier-websocket
+    spec:
+      containers:
+        - name: rulesset
+          env:
+            - name: WEBSOCKET_DEVICES_NOTIFICATION_RKEY
+              value: "websocket-devices-notification"
+            - name: REDIS_PUBSUB_ADDRESS
+              valueFrom:
+                secretKeyRef:
+                  name: redis-pubsub-address
+                  key: url
