@@ -1,0 +1,5 @@
+commonLabels:
+  airspot.krules.dev/rulesset: on-data-received-set-status
+resources:
+- service.yaml
+- triggers.yaml

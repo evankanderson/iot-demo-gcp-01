@@ -1,0 +1,27 @@
+apiVersion: eventing.knative.dev/v1alpha1
+kind: Trigger
+metadata:
+  name: on-data-received-set-status-type-data-received
+spec:
+  filter:
+    attributes:
+      type: data-received
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1alpha1
+      kind: Service
+      name: on-data-received-set-status
+---
+apiVersion: eventing.knative.dev/v1alpha1
+kind: Trigger
+metadata:
+  name: on-data-received-set-status-type-set-device-status
+spec:
+  filter:
+    attributes:
+      type: set-device-status
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1alpha1
+      kind: Service
+      name: on-data-received-set-status
