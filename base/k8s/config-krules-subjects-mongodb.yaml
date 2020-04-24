@@ -5,10 +5,11 @@ metadata:
 data:
   config_subjects_mongodb.yaml: |
     client_args:
-      - mongodb.address
+      - mongodb-01.kube-public
     client_kwargs:
       authSource: admin
-      username: username
+      username: kr-dev-02
       password: $KRULES_SUBJECTS_MONGODB_PASSWORD
-    database: database
+    database: kr-dev-02
     collection: subjects
+    use_atomic_ops_collection: true

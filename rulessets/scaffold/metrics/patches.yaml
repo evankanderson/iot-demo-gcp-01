@@ -12,6 +12,12 @@ patch:
       spec:
         containers:
           - patch__0:
+              env:
+                - name: KRULES_APPS_METRICS_MONGODB_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: config-krules-metrics-mongodb-auth
+                      key: password
               volumeMounts:
                 - name: config-krules-metrics-mongodb-volume
                   mountPath: /krules/config/apps/metrics/mongodb

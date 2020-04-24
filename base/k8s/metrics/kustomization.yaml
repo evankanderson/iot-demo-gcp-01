@@ -1,2 +1,3 @@
 resources:
 - config-krules-metrics-mongodb.yaml
+- config-krules-metrics-mongodb-auth.yaml

@@ -12,6 +12,12 @@ patch:
       spec:
         containers:
           - patch__0:
+              env:
+              - name: KRULES_APPS_SCHEDULER_MONGODB_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: config-krules-scheduler-mongodb-auth
+                    key: password
               volumeMounts:
                 - name: config-krules-scheduler-mongodb-volume
                   mountPath: /krules/config/apps/scheduler/mongodb
