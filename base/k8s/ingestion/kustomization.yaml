@@ -1,2 +1,3 @@
 resources:
 - config-krules-ingestion-mongodb.yaml
+- config-krules-ingestion-mongodb-auth.yaml
