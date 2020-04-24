@@ -10,8 +10,8 @@ processing = Const.PROCESSING
 
 from krules_core.providers import results_rx_factory, settings_factory
 from krules_env import publish_results_errors, publish_results_all, publish_results_filtered
+from app_functions import mongodb as mongodb_functions
 from app_functions.mongodb import WithDatabase, WithCollection, MongoDBInsertOne
-from app_functions.mongodb import set_client as set_mongodb_client
 from dateutil.parser import parse
 from pymongo import IndexModel, HASHED, MongoClient
 
@@ -27,7 +27,7 @@ from pymongo import IndexModel, HASHED, MongoClient
 # )
 
 mongodb_settings = settings_factory().get("apps").get("metrics").get("mongodb")
-set_mongodb_client(
+mongodb_functions.set_client(
     MongoClient(*mongodb_settings.get("client_args", ()), **mongodb_settings.get("client_kwargs", {}))
 )
 
@@ -41,12 +41,13 @@ rulesdata = [
         subscribe_to: TopicsDefault.RESULTS,
         ruledata: {
             processing: [
-                WithDatabase(mongodb_settings["database"]),
-                WithCollection(mongodb_settings["collection"], indexes=[IndexModel([("origin_id", HASHED)])],
-                               capped=True, size=1000000),
+                mongodb_functions.WithDatabase(mongodb_settings["database"]),
+                mongodb_functions.WithCollection(mongodb_settings["collection"],
+                                                 indexes=[IndexModel([("origin_id", HASHED)])],
+                                                 capped=True, size=1000000),
                 SetPayloadProperty("origin_id", lambda payload: payload["payload"]["_event_info"]["Originid"]),
                 SetPayloadProperty("time", lambda payload: parse(payload["payload"]["_event_info"]["Time"])),
-                MongoDBInsertOne(lambda payload: payload),
+                mongodb_functions.MongoDBInsertOne(lambda payload: payload),
             ],
         },
     },
