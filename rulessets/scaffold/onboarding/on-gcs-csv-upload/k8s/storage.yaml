@@ -1,6 +1,5 @@
-
 apiVersion: events.cloud.google.com/v1alpha1
-kind: Storage
+kind: CloudStorageSource
 metadata:
   name: csv-import-storage-source
 spec:
@@ -12,9 +11,6 @@ spec:
 
   #project: krules-dev-254113
   secret:
-    name: google-cloud-key
-    key: key.json
-  pubSubSecret:
     name: google-cloud-key
     key: key.json
 
