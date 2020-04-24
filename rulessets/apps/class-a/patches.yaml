@@ -1,0 +1,5 @@
+kinds:
+  - eventing.knative.dev/v1alpha1:Trigger
+patch:
+  spec:
+    broker: class-a
