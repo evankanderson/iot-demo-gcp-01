@@ -14,3 +14,11 @@ spec:
     spec:
       containers:
         - name: rulesset
+          env:
+          - name: WEBSOCKET_DEVICES_NOTIFICATION_RKEY
+            value: "websocket-devices-notification"
+          - name: REDIS_PUBSUB_ADDRESS
+            valueFrom:
+              secretKeyRef:
+                name: redis-pubsub-address
+                key: url

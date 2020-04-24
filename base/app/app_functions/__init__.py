@@ -1,4 +1,8 @@
+import json
+import os
 from datetime import datetime
+
+import redis
 
 from krules_core.base_functions import RuleFunctionBase, DispatchPolicyConst
 from krules_core.providers import subject_factory, message_router_factory
@@ -35,3 +39,16 @@ class WebsocketNotificationEventClass(object):
     WARNING = "warning"
     CRITICAL = "critical"
     NORMAL = "normal"
+
+
+class WebsocketDevicePublishMessage(RuleFunctionBase):
+
+    def execute(self, _payload):
+
+        r = redis.StrictRedis.from_url(os.environ['REDIS_PUBSUB_ADDRESS'])
+        r.publish(os.environ['WEBSOCKET_DEVICES_NOTIFICATION_RKEY'], json.dumps(
+            {
+                "device": self.subject.name,
+                "payload": _payload
+            }
+        ))
