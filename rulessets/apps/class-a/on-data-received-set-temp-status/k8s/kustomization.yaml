@@ -1,0 +1,6 @@
+commonLabels:
+  rulesset: on-data-received-set-temp-status
+resources:
+- service.yaml
+bases:
+  - ../../../../../base/k8s/slack

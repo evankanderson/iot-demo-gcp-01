@@ -1,0 +1,22 @@
+kinds:
+  - serving.knative.dev/v1alpha1:Service
+  - apps/v1:Deployment
+labelsMatch:
+  - airspot.krules.dev/type: ^rulesset$
+patch:
+  spec:
+    template:
+      spec:
+        containers:
+          - patch__0:
+              env:
+                - name: GOOGLE_APPLICATION_CREDENTIALS
+                  value: /var/secrets/google/key.json
+              volumeMounts:
+                - name: google-cloud-key
+                  mountPath: /var/secrets/google
+
+        volumes:
+          - name: google-cloud-key
+            secret:
+              secretName: google-cloud-key
