@@ -1,6 +1,7 @@
+from app_functions import WebsocketDevicePublishMessage, WebsocketNotificationEventClass
 from krules_core.base_functions import *
 
-from krules_core import RuleConst as Const
+from krules_core import RuleConst as Const, messages
 
 rulename = Const.RULENAME
 subscribe_to = Const.SUBSCRIBE_TO
@@ -25,17 +26,61 @@ results_rx_factory().subscribe(
 rulesdata = [
 
     """
-    My wonderful rule description
+    Send all coords variations
     """,
     {
-        rulename: "my-rule-name",  # TODO: changeme
-        subscribe_to: "my-rule-subscription",  # TODO: changeme
+        rulename: "on-coords-changed-notify-websocket",
+        subscribe_to: messages.SUBJECT_PROPERTY_CHANGED,
         ruledata: {
             filters: [
+                OnSubjectPropertyChanged("coords"),
             ],
             processing: [
+                WebsocketDevicePublishMessage(lambda payload: {
+                    "value": payload["value"],
+                }),
+            ]
+        }
+    },
+
+    """
+    Send location (cheering)
+    """,
+    {
+        rulename: "on-location-changed-notify-websocket-cheering",
+        subscribe_to: messages.SUBJECT_PROPERTY_CHANGED,
+        ruledata: {
+            filters: [
+                OnSubjectPropertyChanged("location"),
+                IsTrue(lambda payload: payload["old_value"] is None)
             ],
-        },
+            processing: [
+                WebsocketDevicePublishMessage(lambda payload: {
+                    "event": payload["value"],
+                    "event_class": WebsocketNotificationEventClass.CHEERING,
+                }),
+            ]
+        }
+    },
+
+    """
+    Send location (normal)
+    """,
+    {
+        rulename: "on-location-changed-notify-websocket-normal",
+        subscribe_to: messages.SUBJECT_PROPERTY_CHANGED,
+        ruledata: {
+            filters: [
+                OnSubjectPropertyChanged("location"),
+                IsFalse(lambda payload: payload["old_value"] is None)
+            ],
+            processing: [
+                WebsocketDevicePublishMessage(lambda payload: {
+                    "event": payload["value"],
+                    "event_class": WebsocketNotificationEventClass.NORMAL,
+                }),
+            ]
+        }
     },
 
 ]
