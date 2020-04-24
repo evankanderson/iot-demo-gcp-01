@@ -15,9 +15,10 @@ spec:
     spec:
       containers:
         - name: rulesset
-          env:
-            - name: SLACK_CHANNEL_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: config-notifications
-                  key: slack.device_status_change.url
+          volumeMounts:
+            - name: config-slack-web-hooks-volumes
+              mountPath: /krules/config/apps/slack/web_hooks
+      volumes:
+        - name: config-slack-web-hooks-volume
+          configMap:
+            name: config-slack-web-hooks

@@ -13,7 +13,7 @@ ruledata = Const.RULEDATA
 filters = Const.FILTERS
 processing = Const.PROCESSING
 
-from krules_core.providers import results_rx_factory
+from krules_core.providers import results_rx_factory, settings_factory
 from krules_env import publish_results_errors, publish_results_all, publish_results_filtered
 
 # import pprint
@@ -26,6 +26,8 @@ from krules_env import publish_results_errors, publish_results_all, publish_resu
 results_rx_factory().subscribe(
     on_next=publish_results_errors,
 )
+
+slack_settings = settings_factory().get("apps").get("slack").get("web_hooks")
 
 rulesdata = [
 
@@ -42,7 +44,7 @@ rulesdata = [
             processing: [
                 PyCall(
                     requests.post,
-                    os.environ["SLACK_CHANNEL_URL"],
+                    slack_settings["device_status_change_url"],
                     json=lambda subject: {
                         "type": "mrkdwn",
                         "text": ":+1: device *{}* on board! ".format(subject.name)
@@ -66,7 +68,7 @@ rulesdata = [
             processing: [
                 PyCall(
                     requests.post,
-                    os.environ["SLACK_CHANNEL_URL"],
+                    slack_settings["device_status_change_url"],
                     json=lambda self: {
                         "type": "mrkdwn",
                         "text": ":white_check_mark: device *{}* is now *{}*".format(
@@ -92,7 +94,7 @@ rulesdata = [
             processing: [
                 PyCall(
                     requests.post,
-                    os.environ["SLACK_CHANNEL_URL"],
+                    slack_settings["device_status_change_url"],
                     json=lambda self: {
                         "text": ":ballot_box_with_check: device *{}* become *{}*".format(
                             self.subject.name, self.payload.get("value")
