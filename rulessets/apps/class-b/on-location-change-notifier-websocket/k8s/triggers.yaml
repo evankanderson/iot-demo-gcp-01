@@ -1,0 +1,29 @@
+apiVersion: eventing.knative.dev/v1alpha1
+kind: Trigger
+metadata:
+  name: on-location-change-notifier-websocket-propchange-coords
+spec:
+  filter:
+    attributes:
+      propertyname: coords
+      type: subject-property-changed
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1alpha1
+      kind: Service
+      name: on-location-change-notifier-websocket
+---
+apiVersion: eventing.knative.dev/v1alpha1
+kind: Trigger
+metadata:
+  name: on-location-change-notifier-websocket-propchange-location
+spec:
+  filter:
+    attributes:
+      propertyname: location
+      type: subject-property-changed
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1alpha1
+      kind: Service
+      name: on-location-change-notifier-websocket
