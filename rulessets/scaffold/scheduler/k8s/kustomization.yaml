@@ -6,4 +6,4 @@ resources:
 - heartbeat.yaml
 - triggers.yaml
 bases:
-- ../../../../../base/k8s/scheduler
+- ../../../../base/k8s/scheduler

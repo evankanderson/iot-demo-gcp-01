@@ -1,8 +1,7 @@
 from datetime import datetime
 
 from dateutil.parser import parse
-from app_functions.mongodb import WithDatabase, WithCollection, MongoDBFind, MongoDBDeleteByIds
-from app_functions.mongodb import set_client as set_mongodb_client
+from app_functions import mongodb as mongodb_functions
 
 from krules_core.base_functions import *
 
@@ -34,7 +33,7 @@ results_rx_factory().subscribe(
 
 INDEXES = [IndexModel([("message", TEXT), ("subject", TEXT)])]
 mongodb_settings = settings_factory().get("apps").get("scheduler").get("mongodb")
-set_mongodb_client(
+mongodb_functions.set_client(
     MongoClient(*mongodb_settings.get("client_args", ()), **mongodb_settings.get("client_kwargs", {}))
 )
 
@@ -48,8 +47,8 @@ rulesdata = [
         subscribe_to: "schedule-message",
         ruledata: {
             processing: [
-                WithDatabase(mongodb_settings["database"]),
-                WithCollection(mongodb_settings["collection"], indexes=INDEXES,
+                mongodb_functions.WithDatabase(mongodb_settings["database"]),
+                mongodb_functions.WithCollection(mongodb_settings["collection"], indexes=INDEXES,
                                exec_func=lambda c, payload: (
                                        payload.get("replace") and c.delete_many({
                                            "message": payload["message"],
@@ -75,9 +74,9 @@ rulesdata = [
         ruledata: {
             processing: [
                 SetPayloadProperty("_ids", []),
-                WithDatabase(mongodb_settings["database"]),
-                WithCollection(mongodb_settings["collection"], indexes=INDEXES),
-                MongoDBFind(
+                mongodb_functions.WithDatabase(mongodb_settings["database"]),
+                mongodb_functions.WithCollection(mongodb_settings["collection"], indexes=INDEXES),
+                mongodb_functions.MongoDBFind(
                     lambda self: {"_when": {"$lt": datetime.now()}},  # query
                     lambda x, payload: (  # foreach
                         message_router_factory().route(x["message"],
@@ -86,7 +85,7 @@ rulesdata = [
                         payload["_ids"].append(str(x["_id"]))
                     ),
                 ),
-                MongoDBDeleteByIds(payload_from="_ids")
+                mongodb_functions.MongoDBDeleteByIds(payload_from="_ids")
             ]
         }
     },
