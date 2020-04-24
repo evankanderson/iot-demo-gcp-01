@@ -14,3 +14,4 @@ RUN pip install -e git+https://krules_guest:kr-guest-sDDsvCXA@gitlab.com/krules/
 
 RUN pip install cloudstorage
 RUN pip install cloudstorage[google]
+RUN pip install pymongo
