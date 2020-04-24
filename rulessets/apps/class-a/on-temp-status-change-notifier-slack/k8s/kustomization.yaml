@@ -1,4 +1,7 @@
+bases:
+- ../../../../../base/k8s/slack
 commonLabels:
   rulesset: on-temp-status-change-notifier-slack
 resources:
 - service.yaml
+- triggers.yaml

@@ -1,5 +1,3 @@
-bases:
-- ../../../../../base/k8s/slack
 commonLabels:
   rulesset: on-data-received-set-temp-status
 resources:
