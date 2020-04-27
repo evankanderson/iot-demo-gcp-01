@@ -1,6 +1,6 @@
 profiles:
   default:
     docker_registry: eu.gcr.io/krules-dev-254113
-    namespace: kr-dev-03
+    namespace: iot-demo-gcp-01
 project:
   name: iot-demo-gcp-01
