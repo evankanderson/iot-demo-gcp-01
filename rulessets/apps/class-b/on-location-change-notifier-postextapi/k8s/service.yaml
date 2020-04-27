@@ -1,0 +1,27 @@
+apiVersion: serving.knative.dev/v1alpha1
+kind: Service
+metadata:
+  name: on-location-change-notifier-postextapi
+  labels:
+    airspot.krules.dev/type: rulesset
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: "1"
+      labels:
+        airspot.krules.dev/type: rulesset
+    spec:
+      containers:
+        - name: rulesset
+          env:
+            - name: EXTAPI_X_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: extapi-server
+                  key: api-key
+            - name: EXTAPI_URL
+              valueFrom:
+                configmapKeyRef:
+                  name: extapi-server
+                  key: url

@@ -12,6 +12,12 @@ patch:
       spec:
         containers:
           - patch__0:
+              env:
+                - name: KRULES_APPS_INGESTION_MONGODB_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: config-krules-ingestion-mongodb-auth
+                      key: password
               volumeMounts:
                 - name: config-krules-ingestion-mongodb-volume
                   mountPath: /krules/config/apps/ingestion/mongodb

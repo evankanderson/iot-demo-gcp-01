@@ -1,3 +1,5 @@
+bases:
+- ../../k8s/slack
 commonLabels:
   airspot.krules.dev/rulesset: on-device-status-change-notifier-slack
 resources:

@@ -1,0 +1,5 @@
+commonLabels:
+  rulesset: on-data-received-set-location
+resources:
+- service.yaml
+- triggers.yaml

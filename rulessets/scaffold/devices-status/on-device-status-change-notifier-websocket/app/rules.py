@@ -1,4 +1,4 @@
-from app_functions import WebsocketNotificationEventClass
+from app_functions import WebsocketNotificationEventClass, WebsocketDevicePublishMessage
 from krules_core.base_functions import *
 
 from krules_core import RuleConst as Const, messages
@@ -12,9 +12,6 @@ processing = Const.PROCESSING
 from krules_core.providers import results_rx_factory
 from krules_env import publish_results_errors, publish_results_all, publish_results_filtered
 
-import redis
-import os
-
 # import pprint
 # results_rx_factory().subscribe(
 #     on_next=pprint.pprint
@@ -25,19 +22,6 @@ import os
 results_rx_factory().subscribe(
     on_next=publish_results_errors,
 )
-
-
-class WebsocketDevicePublishMessage(RuleFunctionBase):
-
-    def execute(self, _payload):
-
-        r = redis.StrictRedis.from_url(os.environ['REDIS_PUBSUB_ADDRESS'])
-        r.publish(os.environ['WEBSOCKET_DEVICES_NOTIFICATION_RKEY'], json.dumps(
-            {
-                "device": self.subject.name,
-                "payload": _payload
-            }
-        ))
 
 
 rulesdata = [

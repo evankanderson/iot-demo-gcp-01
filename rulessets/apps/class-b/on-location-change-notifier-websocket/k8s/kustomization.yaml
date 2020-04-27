@@ -1,0 +1,5 @@
+commonLabels:
+  rulesset: on-location-change-notifier-websocket
+resources:
+- service.yaml
+- triggers.yaml

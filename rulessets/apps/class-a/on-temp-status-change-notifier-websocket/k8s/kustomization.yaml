@@ -1,0 +1,5 @@
+commonLabels:
+  rulesset: on-temp-status-change-notifier-websocket
+resources:
+- service.yaml
+- triggers.yaml

@@ -3,4 +3,4 @@ commonLabels:
 resources:
 - service.yaml
 bases:
-- ../../../../../base/k8s/metrics
+- ../../k8s/mongodb

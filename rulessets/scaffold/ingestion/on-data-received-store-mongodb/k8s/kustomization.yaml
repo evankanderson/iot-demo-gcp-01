@@ -5,4 +5,4 @@ resources:
 - triggers.yaml
 
 bases:
-- ../../../../../base/k8s/ingestion
+- ../../k8s/mongodb

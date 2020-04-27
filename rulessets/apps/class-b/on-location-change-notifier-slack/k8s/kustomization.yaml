@@ -1,0 +1,7 @@
+bases:
+- ../../k8s/slack
+commonLabels:
+  rulesset: on-location-change-notifier-slack
+resources:
+- service.yaml
+- triggers.yaml

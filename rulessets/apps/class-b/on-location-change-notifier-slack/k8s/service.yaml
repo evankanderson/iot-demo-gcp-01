@@ -1,0 +1,23 @@
+apiVersion: serving.knative.dev/v1alpha1
+kind: Service
+metadata:
+  name: on-location-change-notifier-slack
+  labels:
+    airspot.krules.dev/type: rulesset
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: "1"
+      labels:
+        airspot.krules.dev/type: rulesset
+    spec:
+      containers:
+        - name: rulesset
+          volumeMounts:
+            - name: config-slack-web-hooks-volume
+              mountPath: /krules/config/apps/slack/web_hooks
+      volumes:
+        - name: config-slack-web-hooks-volume
+          configMap:
+            name: config-slack-web-hooks

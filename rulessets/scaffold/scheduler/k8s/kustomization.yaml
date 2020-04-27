@@ -5,5 +5,5 @@ resources:
 - cronjob.yaml
 - heartbeat.yaml
 - triggers.yaml
-bases:
-- ../../../../base/k8s/scheduler
+- config-krules-scheduler-mongodb.yaml
+- config-krules-scheduler-mongodb-auth.yaml
