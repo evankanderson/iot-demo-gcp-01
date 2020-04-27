@@ -8,7 +8,7 @@ data:
       - mongodb.address
     client_kwargs:
       authSource: admin
-      username: username
+      username: admin
       password: $KRULES_SUBJECTS_MONGODB_PASSWORD
     database: database
     collection: subjects
