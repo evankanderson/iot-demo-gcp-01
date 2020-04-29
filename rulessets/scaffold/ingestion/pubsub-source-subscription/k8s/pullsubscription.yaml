@@ -5,15 +5,13 @@ metadata:
 spec:
   topic: ingestion
   sink:
-    apiVersion: v1
-    kind: Service
-    name: pubsub-source-subscription
-
+    ref:
+      apiVersion: v1
+      kind: Service
+      name: pubsub-source-subscription
   #project: krules-dev-254113
+  #googleServiceAccount: cloud-run-events@krules-dev-254113.iam.gserviceaccount.com
+
   secret:
     name: google-cloud-key
     key: key.json
-
----
-
-

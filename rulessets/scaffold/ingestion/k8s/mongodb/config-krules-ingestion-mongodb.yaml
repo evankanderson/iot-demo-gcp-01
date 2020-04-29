@@ -8,7 +8,6 @@ data:
       - mongodb-01.kube-public
     client_kwargs:
       authSource: admin
-      username: kr-dev-02
+      username: admin
       password: $KRULES_APPS_INGESTION_MONGODB_PASSWORD
-    database: kr-dev-02
-    collection: data-received
+    database: iot-demo-gcp-01
