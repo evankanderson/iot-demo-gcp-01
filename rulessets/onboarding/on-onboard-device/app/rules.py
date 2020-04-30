@@ -39,7 +39,7 @@ rulesdata = [
                 FlushSubject(),
                 SetSubjectProperties(lambda payload: payload["data"]),
                 SetSubjectExtendedProperty("deviceclass", lambda payload: payload["class"]),
-                SetSubjectProperty('status', 'READY', mute=True),
+                SetSubjectProperty('status', 'READY', muted=True),
             ],
         },
     },

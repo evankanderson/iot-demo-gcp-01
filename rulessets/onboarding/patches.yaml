@@ -7,3 +7,8 @@ patch:
   metadata:
     labels:
       app-domain: onboarding
+  spec:
+    template:
+      metadata:
+        labels:
+          app-domain: onboarding

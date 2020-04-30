@@ -9,6 +9,9 @@ patch:
       app-domain: ingestion
   spec:
     template:
+      metadata:
+        labels:
+          app-domain: ingestion
       spec:
         containers:
           - patch__0:

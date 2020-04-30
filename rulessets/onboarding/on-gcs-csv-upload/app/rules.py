@@ -15,11 +15,13 @@ from cloudstorage.drivers.google import GoogleStorageDriver
 from app_functions.cloudstorage.csv import ProcessCSV_AsDict
 from app_functions.cloudstorage import DeleteBlob
 
-# import pprint
-# results_rx_factory().subscribe(
-#     on_next=pprint.pprint
-# )
-results_rx_factory().subscribe(
+
+import pprint
+rx = results_rx_factory()
+rx.subscribe(
+    on_next=pprint.pprint
+)
+rx.subscribe(
     on_next=publish_results_all,
 )
 # results_rx_factory().subscribe(
@@ -33,11 +35,11 @@ rulesdata = [
     """,
     {
         rulename: "on-csv-upload-import-devices",
-        subscribe_to: "google.storage.object.finalize",
+        subscribe_to: "com.google.cloud.storage.object.finalize",
         ruledata: {
             filters: [
                 CheckSubjectMatch("onboarding/import/(?P<deviceclass>.+)/(?P<filename>.+)", payload_dest="path_info"),
-                CheckPayloadMatchOne("$.contentType", "text/csv")
+                IsTrue(lambda payload: payload.get("contentType") == "text/csv")
             ],
             processing: [
                 ProcessCSV_AsDict(
