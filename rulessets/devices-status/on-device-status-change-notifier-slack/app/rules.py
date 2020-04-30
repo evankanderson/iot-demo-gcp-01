@@ -42,14 +42,14 @@ rulesdata = [
                 CheckPayloadMatchOne("$.value", "READY"),
             ],
             processing: [
-                PyCall(
-                    requests.post,
-                    slack_settings["device_status_change_url"],
-                    json=lambda subject: {
-                        "type": "mrkdwn",
-                        "text": ":+1: device *{}* on board! ".format(subject.name)
-                    }
-                ),
+                # PyCall(
+                #     requests.post,
+                #     slack_settings["device_status_change_url"],
+                #     json=lambda subject: {
+                #         "type": "mrkdwn",
+                #         "text": ":+1: device *{}* on board! ".format(subject.name)
+                #     }
+                # ),
 
             ],
         },
@@ -66,16 +66,16 @@ rulesdata = [
                 CheckPayloadMatchOne("$.value",  "ACTIVE"),
             ],
             processing: [
-                PyCall(
-                    requests.post,
-                    slack_settings["device_status_change_url"],
-                    json=lambda self: {
-                        "type": "mrkdwn",
-                        "text": ":white_check_mark: device *{}* is now *{}*".format(
-                            self.subject.name, self.payload.get("value")
-                        )
-                    }
-                ),
+                # PyCall(
+                #     requests.post,
+                #     slack_settings["device_status_change_url"],
+                #     json=lambda self: {
+                #         "type": "mrkdwn",
+                #         "text": ":white_check_mark: device *{}* is now *{}*".format(
+                #             self.subject.name, self.payload.get("value")
+                #         )
+                #     }
+                # ),
 
             ],
         },
@@ -92,15 +92,15 @@ rulesdata = [
                 CheckPayloadMatchOne("$.value",  "INACTIVE"),
             ],
             processing: [
-                PyCall(
-                    requests.post,
-                    slack_settings["device_status_change_url"],
-                    json=lambda self: {
-                        "text": ":ballot_box_with_check: device *{}* become *{}*".format(
-                            self.subject.name, self.payload.get("value")
-                        )
-                    }
-                ),
+                # PyCall(
+                #     requests.post,
+                #     slack_settings["device_status_change_url"],
+                #     json=lambda self: {
+                #         "text": ":ballot_box_with_check: device *{}* become *{}*".format(
+                #             self.subject.name, self.payload.get("value")
+                #         )
+                #     }
+                # ),
             ],
         },
     },
