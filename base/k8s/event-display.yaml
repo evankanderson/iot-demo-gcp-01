@@ -44,3 +44,50 @@ spec:
       kind: Service
       name: event-display
 ---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-display-metrics
+spec:
+  selector:
+    matchLabels:
+      app: event-display-metrics
+  template:
+    metadata:
+      labels:
+        app: event-display-metrics
+    spec:
+      containers:
+      - name: user-container
+        image: gcr.io/knative-releases/github.com/knative/eventing-contrib/cmd/event_display@sha256:1d6ddc00ab3e43634cd16b342f9663f9739ba09bc037d5dea175dc425a1bb955
+        ports:
+        - containerPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: event-display-metrics
+spec:
+  selector:
+    app: event-display-metrics
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+
+---
+apiVersion: eventing.knative.dev/v1alpha1
+kind: Trigger
+metadata:
+  name: event-display-metrics-trigger
+spec:
+  broker: rules-metrics
+  subscriber:
+    ref:
+      apiVersion: v1
+      kind: Service
+      name: event-display-metrics
+---
