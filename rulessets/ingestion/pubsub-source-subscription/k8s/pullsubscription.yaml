@@ -1,5 +1,5 @@
-apiVersion: pubsub.cloud.google.com/v1alpha1
-kind: PullSubscription
+apiVersion: events.cloud.google.com/v1alpha1
+kind: CloudPubSubSource
 metadata:
   name: pubsub-source-subscription-ingestion
 spec:
@@ -9,8 +9,6 @@ spec:
       apiVersion: v1
       kind: Service
       name: pubsub-source-subscription
-  #project: krules-dev-254113
-  #googleServiceAccount: cloud-run-events@krules-dev-254113.iam.gserviceaccount.com
 
   secret:
     name: google-cloud-key
