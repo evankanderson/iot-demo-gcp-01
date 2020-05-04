@@ -3,5 +3,5 @@ data:
   password: a3ItZGV2LTAy
 kind: Secret
 metadata:
-  name: config-krules-ingestion-mongodb-auth
+  name: config-krules-mongodb-auth
 type: Opaque

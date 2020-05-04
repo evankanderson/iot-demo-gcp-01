@@ -15,13 +15,3 @@ spec:
     spec:
       containers:
         - name: rulesset
-          env:
-            - name: MONGODB_DATABASE
-              value: iot-demo-gcp-01
-          volumeMounts:
-            - name: mongo-db-config-volume
-              mountPath: /krules/config/apps/mongodb
-      volumes:
-        - name: mongo-db-config-volume
-          configMap:
-            name: config-krules-mongodb

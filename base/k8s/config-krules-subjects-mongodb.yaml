@@ -9,7 +9,7 @@ data:
     client_kwargs:
       authSource: admin
       username: admin
-      password: $KRULES_SUBJECTS_MONGODB_PASSWORD
+      password: $KRULES_APPS_MONGODB_PASSWORD
     database: iot-demo-gcp-01
     collection: subjects
     use_atomic_ops_collection: true
