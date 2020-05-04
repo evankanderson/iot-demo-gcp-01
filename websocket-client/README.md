@@ -35,5 +35,5 @@ docker push <usernam>/iot-web-app .
 replace deployment image in k8s.yaml
 kubectl apply -f k8s.yaml
 
-kubectl port-forward --namespace kr-dev-03 svc/iot-web-app 3000:80
+kubectl port-forward --namespace iot-web-app-gcp-01 svc/iot-web-app 3000:80
 go to http://127.0.0.1:3000

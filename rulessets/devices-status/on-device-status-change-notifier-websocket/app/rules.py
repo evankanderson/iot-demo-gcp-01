@@ -39,7 +39,7 @@ rulesdata = [
             processing: [
                 WebsocketDevicePublishMessage(lambda subject: {
                     "device_class": subject.get_ext("deviceclass"),
-                    "status": subject.status,
+                    "status": subject.get("status"),
                     "event": "Onboarded",
                     "event_class": WebsocketNotificationEventClass.CHEERING,
                 })
