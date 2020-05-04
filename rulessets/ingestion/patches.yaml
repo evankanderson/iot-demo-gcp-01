@@ -16,7 +16,7 @@ patch:
         containers:
           - patch__0:
               env:
-                - name: KRULES_APPS_MONGODB_PASSWORD
+                - name: MONGODB_PASSWORD
                   valueFrom:
                     secretKeyRef:
                       name: config-krules-mongodb-auth

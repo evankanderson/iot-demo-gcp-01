@@ -5,6 +5,8 @@ from datetime import datetime
 import redis
 from requests import post
 
+from base64 import b64decode
+
 from krules_core.base_functions import RuleFunctionBase, DispatchPolicyConst
 from krules_core.base_functions.misc import PyCall
 from krules_core.providers import subject_factory, message_router_factory, settings_factory
@@ -68,3 +70,8 @@ class SlackPublishMessage(PyCall):
             }
         })
 
+
+class B64Decode(RuleFunctionBase):
+
+    def execute(self, source, payload_dest):
+        self.payload[payload_dest] = json.loads(b64decode(source).decode("utf-8"))
