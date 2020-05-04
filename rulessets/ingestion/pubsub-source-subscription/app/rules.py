@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from app_functions import B64Decode
 from krules_core.base_functions import *
 
 from krules_core import RuleConst as Const
@@ -40,11 +41,15 @@ rulesdata = [
         ruledata: {
             processing: [
                 SetSubjectPropertySilently("lastSeen", datetime.now().isoformat()),
+                B64Decode(
+                        source=lambda payload: payload["message"]["data"],
+                        payload_dest="data"
+                        ),
                 Route("data-received",                                  # message
-                      lambda payload: payload.pop("deviceid"),          # subject
+                      lambda payload: payload["data"].pop("deviceid"),  # subject
                       lambda payload: {                                 # payload
                           "receivedAt": payload["_event_info"]["Time"],
-                          "data": payload
+                          "data": payload["data"]
                       }),
             ],
         },
