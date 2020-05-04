@@ -37,9 +37,9 @@ rulesdata = [
                 IsTrue(lambda payload: payload["value"] == "READY"),
             ],
             processing: [
-                WebsocketDevicePublishMessage(lambda subject: {
-                    "device_class": subject.get_ext("deviceclass"),
-                    "status": subject.get("status"),
+                WebsocketDevicePublishMessage(lambda self: {
+                    "device_class": self.subject.get_ext("deviceclass"),
+                    "status": self.payload["value"],
                     "event": "Onboarded",
                     "event_class": WebsocketNotificationEventClass.CHEERING,
                 })
