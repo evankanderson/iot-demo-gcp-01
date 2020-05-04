@@ -3,9 +3,11 @@ import os
 from datetime import datetime
 
 import redis
+from requests import post
 
 from krules_core.base_functions import RuleFunctionBase, DispatchPolicyConst
-from krules_core.providers import subject_factory, message_router_factory
+from krules_core.base_functions.misc import PyCall
+from krules_core.providers import subject_factory, message_router_factory, settings_factory
 
 
 class Schedule(RuleFunctionBase):
@@ -52,3 +54,17 @@ class WebsocketDevicePublishMessage(RuleFunctionBase):
                 "payload": _payload
             }
         ))
+
+
+class SlackPublishMessage(PyCall):
+
+    def execute(self, channel=None, text="", *args, **kwargs):
+        channel = channel or "devices_channel"
+        slack_settings = settings_factory().get("apps").get("slack")
+        super().execute(post, args=(slack_settings[channel],), kwargs={
+            "json": {
+                "type": "mrkdwn",
+                "text": text
+            }
+        })
+

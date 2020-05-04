@@ -12,10 +12,10 @@ processing = Const.PROCESSING
 from krules_core.providers import results_rx_factory
 from krules_env import publish_results_errors, publish_results_all, publish_results_filtered
 
-# import pprint
-# results_rx_factory().subscribe(
-#     on_next=pprint.pprint
-# )
+import pprint
+results_rx_factory().subscribe(
+    on_next=pprint.pprint
+)
 # results_rx_factory().subscribe(
 #     on_next=publish_results_all,
 # )
@@ -37,9 +37,9 @@ rulesdata = [
                 IsTrue(lambda payload: payload["value"] == "READY"),
             ],
             processing: [
-                WebsocketDevicePublishMessage(lambda subject: {
-                    "device_class": subject.get_ext("deviceclass"),
-                    "status": subject.status,
+                WebsocketDevicePublishMessage(lambda self: {
+                    "device_class": self.subject.get_ext("deviceclass"),
+                    "status": self.payload["value"],
                     "event": "Onboarded",
                     "event_class": WebsocketNotificationEventClass.CHEERING,
                 })

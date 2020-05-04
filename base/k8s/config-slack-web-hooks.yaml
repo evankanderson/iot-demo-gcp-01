@@ -4,5 +4,5 @@ metadata:
   name: config-slack-web-hooks
 data:
   config_slack_web_hooks.yaml: |
-    devices_channel_url: https://hooks.slack.com/services/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
-    errors_url: https://hooks.slack.com/services/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
+    devices_channel: https://hooks.slack.com/services/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
+    errors: https://hooks.slack.com/services/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
