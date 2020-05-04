@@ -38,7 +38,7 @@ rulesdata = [
         subscribe_to: messages.SUBJECT_PROPERTY_CHANGED,
         ruledata: {
             filters: [
-                CheckPayloadMatchOne("$.value", "READY"),
+                IsTrue(lambda payload: payload.get("value") == "READY"),
             ],
             processing: [
                 SlackPublishMessage(
@@ -58,7 +58,7 @@ rulesdata = [
         subscribe_to: messages.SUBJECT_PROPERTY_CHANGED,
         ruledata: {
             filters: [
-                CheckPayloadMatchOne("$.value",  "ACTIVE"),
+                IsTrue(lambda payload: payload.get("value") == "ACTIVE"),
             ],
             processing: [
                 SlackPublishMessage(
@@ -80,7 +80,7 @@ rulesdata = [
         subscribe_to: messages.SUBJECT_PROPERTY_CHANGED,
         ruledata: {
             filters: [
-                CheckPayloadMatchOne("$.value",  "INACTIVE"),
+                IsTrue(lambda payload: payload.get("value") == "INACTIVE"),
             ],
             processing: [
                 SlackPublishMessage(

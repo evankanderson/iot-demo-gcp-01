@@ -6,7 +6,7 @@ spec:
   template:
     spec:
       containers:
-        - image: eu.gcr.io/airspot/heartbeats-1c2797901d077071b664df50ca35a17f@sha256:a159f7ba18aacf588fc470fe483efac29d8046ec77742bee63587f0a6dee8582
+        - image: eu.gcr.io/krules-dev-254113/heartbeats-1c2797901d077071b664df50ca35a17f
           name: heartbeats
           args:
             - --period=2

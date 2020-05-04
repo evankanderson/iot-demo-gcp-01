@@ -29,6 +29,10 @@ from krules_env import publish_results_errors, publish_results_all, publish_resu
 results_rx_factory().subscribe(
     on_next=publish_results_errors,
 )
+results_rx_factory().subscribe(
+    on_next=lambda result: publish_results_filtered(result, "$.rule_name", "on-schedule-received")
+)
+
 # results_rx_factory().subscribe(
 #     on_next=lambda result: publish_results_filtered(result, "$.._ids_deleted_count", lambda x: x and x > 0)
 # )
