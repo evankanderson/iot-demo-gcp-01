@@ -70,8 +70,8 @@ rulesdata = [
                 # reject file
                 DeleteBlob(
                     driver=GoogleStorageDriver,
-                    bucket=lambda payload: payload["bucket"],
-                    path=lambda payload: payload["name"]
+                    bucket=lambda payload: payload["payload"]["bucket"],
+                    path=lambda payload: payload["payload"]["name"]
                 )
             ]
 

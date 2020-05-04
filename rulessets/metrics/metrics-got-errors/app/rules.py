@@ -42,7 +42,7 @@ rulesdata = [
                 Route(
                     lambda payload: "{}-errors".format(payload["_event_info"]["Source"]),
                     lambda payload: payload["subject"],
-                    lambda payload: payload["payload"]
+                    lambda payload: payload
                 )
             ],
         },
