@@ -6,16 +6,20 @@ spec:
   template:
     spec:
       containers:
-        - image: ade8850/heartbeats-007104604b758f52b70a5535e662802b:latest
+        - image: eu.gcr.io/airspot/heartbeats-1c2797901d077071b664df50ca35a17f@sha256:a159f7ba18aacf588fc470fe483efac29d8046ec77742bee63587f0a6dee8582
           name: heartbeats
           args:
             - --period=2
             - --eventType=krules.heartbeat
           env:
-            - name: POD_NAME
-              value: "heartbeats"
-            - name: POD_NAMESPACE
-              value: "iot-demo-gcp-01"
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
   sink:
     ref:
       apiVersion: serving.knative.dev/v1alpha1
