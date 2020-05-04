@@ -21,9 +21,8 @@ patch:
                     secretKeyRef:
                       name: config-krules-mongodb-auth
                       key: password
-                  env:
-                    - name: MONGODB_DATABASE
-                      value: iot-demo-gcp-01
+                - name: MONGODB_DATABASE
+                  value: ingestion
               volumeMounts:
                 - name: config-krules-mongodb-volume
                   mountPath: /krules/config/apps/mongodb

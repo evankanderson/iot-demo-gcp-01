@@ -5,7 +5,7 @@ metadata:
 data:
   config_subjects_mongodb.yaml: |
     client_args:
-      - mongodb-standalone-0
+      - database
     client_kwargs:
       authSource: admin
       username: admin
