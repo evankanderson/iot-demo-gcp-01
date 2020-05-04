@@ -3,5 +3,3 @@ commonLabels:
 resources:
 - service.yaml
 - pullsubscription.yaml
-bases:
-- ../../k8s/mongodb
