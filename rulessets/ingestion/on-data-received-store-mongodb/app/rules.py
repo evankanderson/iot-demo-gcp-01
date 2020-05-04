@@ -43,7 +43,7 @@ rulesdata = [
         ruledata: {
             processing: [
                 mongodb_functions.WithDatabase(mongodb_settings["database"]),
-                mongodb_functions.WithCollection(mongodb_settings["collection"],
+                mongodb_functions.WithCollection("data-received",
                                                  indexes=[IndexModel([("deviceid", HASHED)])],
                                                  capped=True, size=1000000,
                                                  exec_func=lambda c, self:
