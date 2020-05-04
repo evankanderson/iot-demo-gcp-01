@@ -11,6 +11,7 @@ subscribe_to = Const.SUBSCRIBE_TO
 ruledata = Const.RULEDATA
 filters = Const.FILTERS
 processing = Const.PROCESSING
+import jsonpath_rw_ext as jp
 
 from krules_core.providers import results_rx_factory
 from krules_env import publish_results_errors, publish_results_all, publish_results_filtered
@@ -61,11 +62,11 @@ rulesdata = [
             processing: [
                 SlackPublishMessage(
                     channel="errors",
-                    text=lambda jp_match1, payload:
+                    text=lambda payload:
                     ":ambulance: *{}[{}]* \n```\n{}\n```".format(
                         payload["_event_info"]["Source"],
                         payload["rule_name"],
-                        "\n".join(jp_match1("$.processing[*].exc_info", payload))
+                        "\n".join(jp.match1("$.processing[*].exc_info", payload))
                     )
                 ),
             ]
