@@ -1,6 +1,7 @@
 from krules_core.base_functions import *
 
 from krules_core import RuleConst as Const, TopicsDefault
+import os
 
 rulename = Const.RULENAME
 subscribe_to = Const.SUBSCRIBE_TO
@@ -31,8 +32,9 @@ set_mongodb_client(
     MongoClient(*mongodb_settings.get("client_args", ()), **mongodb_settings.get("client_kwargs", {}))
 )
 
-DATABASE = os.environ.get("MONGODB_DATABASE", mongodb_settings.get("database"))
-COLLECTION = os.environ.get("MONGODB_COLLECTION", mongodb_settings.get("collection"))
+DATABASE = os.environ.get("MONGODB_DATABASE")
+COLLECTION_RAW = os.environ.get("MONGODB_COLLECTION_RAW")
+COLLECTION_ERRORS = os.environ.get("MONGODB_COLLECTION_ERRORS")
 
 rulesdata = [
 
@@ -44,8 +46,8 @@ rulesdata = [
         subscribe_to: TopicsDefault.RESULTS,
         ruledata: {
             processing: [
-                WithDatabase(mongodb_settings["database"]),
-                WithCollection(mongodb_settings["collection"],
+                WithDatabase(DATABASE),
+                WithCollection(COLLECTION_RAW,
                                indexes=[IndexModel([("origin_id", HASHED)])],
                                capped=True, size=1000000),
                 SetPayloadProperty("origin_id", lambda payload: payload["payload"]["_event_info"]["Originid"]),
@@ -55,4 +57,33 @@ rulesdata = [
         },
     },
 
+    """
+    Errors in his own collection
+    """,
+    {
+        rulename: "mongo-store-errors",
+        subscribe_to: TopicsDefault.RESULTS,
+        ruledata: {
+            filters: [
+                IsTrue(lambda payload: payload["got_errors"])
+            ],
+            processing: [
+                WithDatabase(DATABASE),
+                WithCollection(COLLECTION_ERRORS,
+                               indexes=[IndexModel([("origin_id", HASHED)])],
+                               capped=True, size=1000000),
+                SetPayloadProperty("origin_id", lambda payload: payload["payload"]["_event_info"]["Originid"]),
+                SetPayloadProperty("time", lambda payload: parse(payload["payload"]["_event_info"]["Time"])),
+                CheckPayloadMatchOne("*[?(@.exception)]", payload_dest="function"),
+                MongoDBInsertOne(lambda payload: {
+                    "origin_id": payload["origin_id"],
+                    "time": payload["time"],
+                    "message": payload["message"],
+                    "subject": payload["subject"],
+                    "rule_name": payload["rule_name"],
+                    "function": payload["function"],
+                }),
+            ],
+        },
+    },
 ]

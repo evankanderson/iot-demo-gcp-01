@@ -9,5 +9,5 @@ data:
     client_kwargs:
       authSource: admin
       username: admin
-      password: $KRULES_APPS_INGESTION_MONGODB_PASSWORD
+      password: $MONGODB_PASSWORD
     database: iot-demo-gcp-01
