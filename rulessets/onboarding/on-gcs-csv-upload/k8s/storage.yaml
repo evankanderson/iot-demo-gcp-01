@@ -3,7 +3,7 @@ kind: CloudStorageSource
 metadata:
   name: csv-import-storage-source
 spec:
-  bucket: krules-dev-demo-01
+  bucket: krules-dev-demo-02
   sink:
     ref:
       apiVersion: serving.knative.dev/v1alpha1

@@ -43,8 +43,8 @@ class WithCollection(RuleFunctionBase):
 
         dbinfo = self.payload.get('_mongodb', {})
         db = get_client()[get_dbname(dbinfo)]
-        if collection not in db.collection_names():
-            indexes=[]
+        if collection not in db.list_collection_names():
+            indexes = []
             if "indexes" in kwargs:
                 indexes = kwargs.pop("indexes")
             db.create_collection(collection, **kwargs)
