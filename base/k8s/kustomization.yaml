@@ -10,3 +10,5 @@ resources:
 #- config-krules-subjects-redis-auth.yaml
 - config-krules-subjects-redis.yaml
 - config-slack-web-hooks.yaml
+- config-krules-mongodb.yaml
+- config-krules-mongodb-auth.yaml

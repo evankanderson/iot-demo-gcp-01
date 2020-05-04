@@ -57,12 +57,6 @@ patch:
       spec:
         containers:
           - patch__0:
-#              env:
-#                - name: KRULES_SUBJECTS_REDIS_PASSWORD
-#                  valueFrom:
-#                    secretKeyRef:
-#                      name: config-krules-subjects-redis-auth
-#                      key: password
               volumeMounts:
                 - name: config-krules-subjects-redis-volume
                   mountPath: /krules/config/subjects-backends/redis
