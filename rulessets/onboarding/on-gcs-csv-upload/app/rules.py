@@ -23,9 +23,9 @@ results_rx_factory().subscribe(
 results_rx_factory().subscribe(
     on_next=lambda result: publish_results_filtered(result, "$.processed", True)
 )
-results_rx_factory().subscribe(
-    on_next=publish_results_errors,
-)
+# results_rx_factory().subscribe(
+#     on_next=publish_results_errors,
+# )
 
 rulesdata = [
 
