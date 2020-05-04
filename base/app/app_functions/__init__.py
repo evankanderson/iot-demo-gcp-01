@@ -61,4 +61,10 @@ class SlackPublishMessage(PyCall):
     def execute(self, channel=None, text="", *args, **kwargs):
         channel = channel or "devices_channel"
         slack_settings = settings_factory().get("apps").get("slack")
-        super().execute(post, args=(slack_settings[channel]), kwargs={"json": {"type": "mrkdwn", "text": text}})
+        super().execute(post, args=(slack_settings[channel],), kwargs={
+            "json": {
+                "type": "mrkdwn",
+                "text": text
+            }
+        })
+
