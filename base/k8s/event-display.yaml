@@ -12,8 +12,8 @@ spec:
         app: event-display
     spec:
       containers:
-      - name: user-container
-        image: gcr.io/knative-releases/github.com/knative/eventing-contrib/cmd/event_display
+      - name: event-display
+        image: gcr.io/knative-releases/knative.dev/eventing-contrib/cmd/event_display
         ports:
         - containerPort: 8080
 
@@ -59,8 +59,8 @@ spec:
         app: event-display-metrics
     spec:
       containers:
-      - name: user-container
-        image: gcr.io/knative-releases/github.com/knative/eventing-contrib/cmd/event_display
+      - name: event-display
+        image: gcr.io/knative-releases/knative.dev/eventing-contrib/cmd/event_display
         ports:
         - containerPort: 8080
 
