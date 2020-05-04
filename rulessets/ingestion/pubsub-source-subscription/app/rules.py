@@ -36,7 +36,7 @@ rulesdata = [
     """,
     {
         rulename: "on-data-received-propagate",
-        subscribe_to: "google.pubsub.topic.publish",
+        subscribe_to: "com.google.cloud.pubsub.topic.publish",
         ruledata: {
             processing: [
                 SetSubjectPropertySilently("lastSeen", datetime.now().isoformat()),
