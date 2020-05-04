@@ -1,7 +1,7 @@
+from app_functions import SlackPublishMessage
 from krules_core.base_functions import *
 
 from krules_core import RuleConst as Const, TopicsDefault
-from krules_core.base_functions.misc import PyCall
 
 import requests
 import os
@@ -42,14 +42,14 @@ rulesdata = [
                 Route(
                     lambda payload: "{}-errors".format(payload["_event_info"]["Source"]),
                     lambda payload: payload["subject"],
-                    lambda payload: payload
+                    lambda payload: payload["payload"]
                 )
             ],
         },
     },
 
     """
-    Notify on mattermost
+    Notify on slack
     """,
     {
         rulename: 'on-errors-notify',
@@ -59,16 +59,14 @@ rulesdata = [
                 IsTrue(lambda payload: payload["got_errors"])
             ],
             processing: [
-                PyCall(
-                    requests.post,
-                    os.environ.get("SLACK_CHANNEL_URL"),
-                    json=lambda jp_match1, payload: {
-                        "text": ":ambulance: *{}[{}]* \n```\n{}\n```".format(
-                            payload["_event_info"]["Source"],
-                            payload["rule_name"],
-                            "\n".join(jp_match1("$.processing[*].exc_info", payload))
-                        )
-                    }
+                SlackPublishMessage(
+                    channel="errors",
+                    text=lambda jp_match1, payload:
+                    ":ambulance: *{}[{}]* \n```\n{}\n```".format(
+                        payload["_event_info"]["Source"],
+                        payload["rule_name"],
+                        "\n".join(jp_match1("$.processing[*].exc_info", payload))
+                    )
                 ),
             ]
         }

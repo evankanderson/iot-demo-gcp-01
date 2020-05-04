@@ -15,3 +15,10 @@ spec:
     spec:
       containers:
         - name: rulesset
+          volumeMounts:
+              - name: config-slack-web-hooks-volume
+                mountPath: /krules/config/apps/slack
+      volumes:
+        - name: config-slack-web-hooks-volume
+          configMap:
+            name: config-slack-web-hooks
