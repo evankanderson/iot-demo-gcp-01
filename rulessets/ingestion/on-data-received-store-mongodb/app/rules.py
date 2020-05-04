@@ -33,6 +33,9 @@ set_mongodb_client(
     MongoClient(*mongodb_settings.get("client_args", ()), **mongodb_settings.get("client_kwargs", {}))
 )
 
+DATABASE = os.environ.get("MONGODB_DATABASE", mongodb_settings.get("database", "iot-demo-gcp-01"))
+COLLECTION = os.environ.get("MONGODB_COLLECTION", mongodb_settings.get("collection", "data-received"))
+
 rulesdata = [
 
     """
@@ -43,8 +46,8 @@ rulesdata = [
         subscribe_to: "data-received",
         ruledata: {
             processing: [
-                WithDatabase(os.environ.get("MONGODB_DATABASE", mongodb_settings["database"])),
-                WithCollection("data-received",
+                WithDatabase(DATABASE),
+                WithCollection(COLLECTION,
                                indexes=[IndexModel([("deviceid", HASHED)])],
                                capped=True, size=1000000,
                                exec_func=lambda c, self:

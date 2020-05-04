@@ -3,6 +3,3 @@ commonLabels:
 resources:
 - service.yaml
 - triggers.yaml
-
-bases:
-- ../../k8s/mongodb
