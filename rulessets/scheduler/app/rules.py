@@ -1,7 +1,9 @@
 from datetime import datetime
+import os
 
 from dateutil.parser import parse
-from app_functions import mongodb as mongodb_functions
+from app_functions.mongodb import set_client as set_mongodb_client
+from app_functions.mongodb import WithDatabase, WithCollection, MongoDBFind, MongoDBDeleteByIds
 
 from krules_core.base_functions import *
 
@@ -24,16 +26,20 @@ from krules_env import publish_results_errors, publish_results_all, publish_resu
 # results_rx_factory().subscribe(
 #     on_next=publish_results_all,
 # )
-# results_rx_factory().subscribe(
-#     on_next=publish_results_errors,
-# )
 results_rx_factory().subscribe(
-    on_next=lambda result: publish_results_filtered(result, "$.._ids_deleted_count", lambda x: x and x > 0)
+    on_next=publish_results_errors,
 )
+# results_rx_factory().subscribe(
+#     on_next=lambda result: publish_results_filtered(result, "$.._ids_deleted_count", lambda x: x and x > 0)
+# )
+
+
+DATABASE = os.environ.get("MONGODB_DATABASE")
+COLLECTION = os.environ.get("MONGODB_COLLECTION")
 
 INDEXES = [IndexModel([("message", TEXT), ("subject", TEXT)])]
-mongodb_settings = settings_factory().get("apps").get("scheduler").get("mongodb")
-mongodb_functions.set_client(
+mongodb_settings = settings_factory().get("apps").get("mongodb")
+set_mongodb_client(
     MongoClient(*mongodb_settings.get("client_args", ()), **mongodb_settings.get("client_kwargs", {}))
 )
 
@@ -47,8 +53,8 @@ rulesdata = [
         subscribe_to: "schedule-message",
         ruledata: {
             processing: [
-                mongodb_functions.WithDatabase(mongodb_settings["database"]),
-                mongodb_functions.WithCollection(mongodb_settings["collection"], indexes=INDEXES,
+                WithDatabase(DATABASE),
+                WithCollection(COLLECTION, indexes=INDEXES,
                                exec_func=lambda c, payload: (
                                        payload.get("replace") and c.delete_many({
                                            "message": payload["message"],
@@ -65,6 +71,7 @@ rulesdata = [
             ]
         },
     },
+
     """
     Do schedules
     """,
@@ -74,9 +81,9 @@ rulesdata = [
         ruledata: {
             processing: [
                 SetPayloadProperty("_ids", []),
-                mongodb_functions.WithDatabase(mongodb_settings["database"]),
-                mongodb_functions.WithCollection(mongodb_settings["collection"], indexes=INDEXES),
-                mongodb_functions.MongoDBFind(
+                WithDatabase(DATABASE),
+                WithCollection(COLLECTION, indexes=INDEXES),
+                MongoDBFind(
                     lambda self: {"_when": {"$lt": datetime.now()}},  # query
                     lambda x, payload: (  # foreach
                         message_router_factory().route(x["message"],
@@ -85,7 +92,7 @@ rulesdata = [
                         payload["_ids"].append(str(x["_id"]))
                     ),
                 ),
-                mongodb_functions.MongoDBDeleteByIds(payload_from="_ids")
+                MongoDBDeleteByIds(payload_from="_ids")
             ]
         }
     },

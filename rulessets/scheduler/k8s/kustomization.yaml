@@ -1,9 +1,7 @@
 commonLabels:
   airspot.krules.dev/rulesset: scheduler
 resources:
-- service.yaml
-- cronjob.yaml
+#- cronjob.yaml
 - heartbeat.yaml
+- service.yaml
 - triggers.yaml
-- config-krules-scheduler-mongodb.yaml
-- config-krules-scheduler-mongodb-auth.yaml

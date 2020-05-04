@@ -1,7 +1,0 @@
-apiVersion: v1
-data:
-  password: a3ItZGV2LTAy
-kind: Secret
-metadata:
-  name: config-krules-scheduler-mongodb-auth
-type: Opaque

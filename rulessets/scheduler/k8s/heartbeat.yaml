@@ -1,4 +1,4 @@
-apiVersion: sources.eventing.knative.dev/v1alpha1
+apiVersion: sources.knative.dev/v1alpha2
 kind: ContainerSource
 metadata:
   name: heartbeats
@@ -13,11 +13,12 @@ spec:
             - --eventType=krules.heartbeat
           env:
             - name: POD_NAME
-              value: "heartbeat"
+              value: "heartbeats"
             - name: POD_NAMESPACE
-              value: "default"
+              value: "iot-demo-gcp-01"
   sink:
-    apiVersion: serving.knative.dev/v1alpha1
-    kind: Service
-    name: scheduler
+    ref:
+      apiVersion: serving.knative.dev/v1alpha1
+      kind: Service
+      name: scheduler
 ---
