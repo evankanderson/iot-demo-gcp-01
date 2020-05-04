@@ -16,5 +16,7 @@ spec:
       containers:
         - name: rulesset
           env:
-            - name: MONGODB_COLLECTION
+            - name: MONGODB_COLLECTION_RAW
               value: raw
+            - name: MONGODB_COLLECTION_ERRORS
+              value: errors
