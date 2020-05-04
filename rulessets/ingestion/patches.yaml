@@ -16,16 +16,19 @@ patch:
         containers:
           - patch__0:
               env:
-                - name: KRULES_APPS_INGESTION_MONGODB_PASSWORD
+                - name: KRULES_APPS_MONGODB_PASSWORD
                   valueFrom:
                     secretKeyRef:
-                      name: config-krules-ingestion-mongodb-auth
+                      name: config-krules-mongodb-auth
                       key: password
+                  env:
+                    - name: MONGODB_DATABASE
+                      value: iot-demo-gcp-01
               volumeMounts:
-                - name: config-krules-ingestion-mongodb-volume
-                  mountPath: /krules/config/apps/ingestion/mongodb
+                - name: config-krules-mongodb-volume
+                  mountPath: /krules/config/apps/mongodb
 
         volumes:
-          - name: config-krules-ingestion-mongodb-volume
+          - name: config-krules-mongodb-volume
             configMap:
-              name: config-krules-ingestion-mongodb
+              name: config-krules-mongodb
