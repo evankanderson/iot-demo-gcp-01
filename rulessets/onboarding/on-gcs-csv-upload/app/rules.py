@@ -64,14 +64,14 @@ rulesdata = [
         subscribe_to: "on-gcs-csv-upload-errors",
         ruledata: {
             filters: [
-                CheckPayloadMatchOne("$.rule_name", "on-csv-upload-import-devices")
+                IsTrue(lambda payload: payload["rule_name"] == "on-csv-upload-import-devices")
             ],
             processing: [
                 # reject file
                 DeleteBlob(
                     driver=GoogleStorageDriver,
-                    bucket=lambda payload: payload["payload"]["bucket"],
-                    path=lambda payload: payload["payload"]["name"]
+                    bucket=lambda payload: payload["bucket"],
+                    path=lambda payload: payload["name"]
                 )
             ]
 
