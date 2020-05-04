@@ -21,6 +21,9 @@ import pprint
 results_rx_factory().subscribe(
     on_next=pprint.pprint
 )
+results_rx_factory().subscribe(
+    on_next=lambda x: publish_results_filtered(x, "$.processed", True)
+)
 # results_rx_factory().subscribe(
 #     on_next=publish_results_all,
 # )

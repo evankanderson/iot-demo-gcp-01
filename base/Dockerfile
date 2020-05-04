@@ -1,4 +1,4 @@
-FROM gcr.io/airspot/rulesset-image-base:0.1.36
+FROM gcr.io/airspot/rulesset-image-base:0.1.38
 
 ADD ./app /app
 

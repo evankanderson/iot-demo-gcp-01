@@ -29,9 +29,9 @@ from krules_env import publish_results_errors, publish_results_all, publish_resu
 results_rx_factory().subscribe(
     on_next=publish_results_errors,
 )
-results_rx_factory().subscribe(
-    on_next=lambda result: publish_results_filtered(result, "$.rule_name", "on-schedule-received")
-)
+# results_rx_factory().subscribe(
+#     on_next=lambda result: publish_results_filtered(result, "$.rule_name", "on-schedule-received")
+# )
 
 # results_rx_factory().subscribe(
 #     on_next=lambda result: publish_results_filtered(result, "$.._ids_deleted_count", lambda x: x and x > 0)
@@ -59,16 +59,16 @@ rulesdata = [
             processing: [
                 WithDatabase(DATABASE),
                 WithCollection(COLLECTION, indexes=INDEXES,
-                               exec_func=lambda c, payload: (
-                                       payload.get("replace") and c.delete_many({
-                                           "message": payload["message"],
-                                           "subject": payload["subject"],
+                               exec_func=lambda c, self: (
+                                       self.payload.get("replace") and c.delete_many({
+                                           "message": self.payload["message"],
+                                           "subject": self.payload["subject"],
                                        }),
                                        c.insert_one({
-                                           "message": payload["message"],
-                                           "subject": payload["subject"],
-                                           "payload": payload["payload"],
-                                           "_when": parse(payload["when"])
+                                           "message": self.payload["message"],
+                                           "subject": self.payload["subject"],
+                                           "payload": self.payload["payload"],
+                                           "_when": parse(self.payload["when"])
                                        })
                                    )
                                )
@@ -89,11 +89,11 @@ rulesdata = [
                 WithCollection(COLLECTION, indexes=INDEXES),
                 MongoDBFind(
                     lambda self: {"_when": {"$lt": datetime.now()}},  # query
-                    lambda x, payload: (  # foreach
+                    lambda x, self: (  # foreach
                         message_router_factory().route(x["message"],
                                                        subject_factory(x["subject"]),
                                                        x["payload"]),
-                        payload["_ids"].append(str(x["_id"]))
+                        self.payload["_ids"].append(str(x["_id"]))
                     ),
                 ),
                 MongoDBDeleteByIds(payload_from="_ids")

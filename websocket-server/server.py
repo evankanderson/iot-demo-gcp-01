@@ -84,6 +84,7 @@ async def start_server(host="0.0.0.0", port=5678):
 
 if __name__ == "__main__":
 
+    print("********************************")
     loop = asyncio.get_event_loop()
     loop.run_until_complete(start_server())
     loop.run_forever()

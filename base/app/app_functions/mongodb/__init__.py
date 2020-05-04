@@ -54,7 +54,7 @@ class WithCollection(RuleFunctionBase):
         self.payload['_mongodb'] = dbinfo
 
         if exec_func is not None:
-            exec_func(db[collection], self.payload)
+            exec_func(db[collection], self)
 
 
 class MongoDBInsertOne(RuleFunctionBase):
