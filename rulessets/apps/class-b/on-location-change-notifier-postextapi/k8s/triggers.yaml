@@ -16,7 +16,7 @@ spec:
 apiVersion: eventing.knative.dev/v1alpha1
 kind: Trigger
 metadata:
-  name: on-location-change-notifier-postextapi-type-on-location-change-notifier-postextapi-errors
+  name: on-location-change-notifier-postextapi-on-errors
 spec:
   filter:
     attributes:
@@ -30,7 +30,7 @@ spec:
 apiVersion: eventing.knative.dev/v1alpha1
 kind: Trigger
 metadata:
-  name: on-location-change-notifier-postextapi-type-do-extapi-post
+  name: on-location-change-notifier-postextapi-do-post
 spec:
   filter:
     attributes:

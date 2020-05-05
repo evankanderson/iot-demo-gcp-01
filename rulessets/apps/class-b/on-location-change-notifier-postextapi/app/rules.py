@@ -13,18 +13,19 @@ subscribe_to = Const.SUBSCRIBE_TO
 ruledata = Const.RULEDATA
 filters = Const.FILTERS
 processing = Const.PROCESSING
+import jsonpath_rw_ext as jp
 
 from krules_core.providers import results_rx_factory
 from krules_env import publish_results_errors, publish_results_all, publish_results_filtered
 import requests
 
-# import pprint
-# results_rx_factory().subscribe(
-#     on_next=pprint.pprint
-# )
+import pprint
 results_rx_factory().subscribe(
-    on_next=publish_results_all,
+    on_next=pprint.pprint
 )
+# results_rx_factory().subscribe(
+#     on_next=publish_results_all,
+# )
 # results_rx_factory().subscribe(
 #     on_next=publish_results_errors,
 # )
@@ -56,11 +57,11 @@ rulesdata = [
                     "url": os.environ["EXTAPI_URL"],
                     # https://europe-west3-krules-dev-254113.cloudfunctions.net/store_devices_location
                     "req_kwargs": {
-                        "headers": {"x-api-key": os.environ["EXTAPI_X_API_KEY"]},
+                        "headers": {},# {"x-api-key": os.environ["EXTAPI_X_API_KEY"]},
                         "json": {
                             "device": self.subject.name,
                             "timestamp": datetime.utcnow().replace(tzinfo=pytz.UTC).isoformat(),
-                            "coords": self.subject.coords,
+                            "coords": self.subject.get("coords"),
                             "location": self.payload["value"],
                         }
                     }
@@ -99,10 +100,10 @@ rulesdata = [
         subscribe_to: "{}-errors".format(os.environ["K_SERVICE"]),
         ruledata: {
             filters: [
-                IsTrue(lambda payload, jp_match1:
+                IsTrue(lambda payload:
                        payload.get("rule_name") == "on-do-extapi-post" and
-                       jp_match1("$.processing[*].exception", payload) == "requests.exceptions.HTTPError" and
-                       jp_match1("$.processing[*].exc_extra_info.response_code", payload) == 503)
+                       jp.match1("$.processing[*].exception", payload) == "requests.exceptions.HTTPError" and
+                       jp.match1("$.processing[*].exc_extra_info.response_code", payload) == 503)
             ],
             processing: [
                 Schedule(message="do-extapi-post",

@@ -15,11 +15,11 @@ spec:
       containers:
         - name: rulesset
           env:
-            - name: EXTAPI_X_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: extapi-server
-                  key: api-key
+#            - name: EXTAPI_X_API_KEY
+#              valueFrom:
+#                secretKeyRef:
+#                  name: extapi-server
+#                  key: api-key
             - name: EXTAPI_URL
               valueFrom:
                 configmapKeyRef:
