@@ -1,5 +1,6 @@
 import requests
 
+from app_functions import SlackPublishMessage
 from krules_core.base_functions import *
 
 from krules_core import RuleConst as Const, messages
@@ -41,14 +42,11 @@ rulesdata = [
                 IsFalse(lambda payload: payload["old_value"] is None)
             ],
             processing: [
-                PyCall(
-                    requests.post,
-                    slack_settings["device_status_change_url"],
-                    json=lambda self: {
-                        "text": ":rocket: device *{}* moved to {}".format(
+                SlackPublishMessage(
+                    channel="devices_channel",
+                    text=lambda self: ":rocket: device *{}* moved to {}".format(
                             self.subject.name, self.payload.get("value")
                         )
-                    }
                 ),
             ]
         }
@@ -66,14 +64,11 @@ rulesdata = [
                 IsTrue(lambda payload: payload["old_value"] is None)
             ],
             processing: [
-                PyCall(
-                    requests.post,
-                    slack_settings["device_status_change_url"],
-                    json=lambda self: {
-                        "text": ":triangular_flag_on_post: device *{}* located in {}".format(
+                SlackPublishMessage(
+                    channel="devices_channel",
+                    text=lambda self: ":triangular_flag_on_post: device *{}* located in {}".format(
                             self.subject.name, self.payload.get("value")
-                        )
-                    }
+                    )
                 ),
             ]
         }

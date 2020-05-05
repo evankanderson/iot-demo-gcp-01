@@ -1,0 +1,14 @@
+apiVersion: eventing.knative.dev/v1alpha1
+kind: Trigger
+metadata:
+  name: default-to-class-b-trigger
+spec:
+  broker: default
+  filter:
+    attributes:
+      deviceclass: class-b
+  subscriber:
+    ref:
+      apiVersion: eventing.knative.dev/v1alpha1
+      kind: Broker
+      name: class-b

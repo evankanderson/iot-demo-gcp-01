@@ -36,7 +36,7 @@ class SetLocationProperties(RuleFunctionBase):
         coords = (float(self.payload["data"]["lat"]), float(self.payload["data"]["lng"]))
         self.subject.coords = str(coords)
         # ensure ref point is already set
-        if "m_refCoords" not in self.subject:
+        if "refCoords" not in self.subject:
             self.subject.m_refCoords = str(coords)
         # set location if not already set or if tolerance is exceeded
         if "location" not in self.subject or distance.distance(

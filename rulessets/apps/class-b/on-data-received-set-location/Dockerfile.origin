@@ -1,4 +1,4 @@
 FROM {{ dockerRegistry }}/{{ projectName }}-base:latest
 
 ADD ./app /app
-pip install geopy
+RUN pip install geopy
