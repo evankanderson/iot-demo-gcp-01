@@ -19,6 +19,9 @@ from krules_env import publish_results_errors, publish_results_all, publish_resu
 #     on_next=publish_results_all,
 # )
 results_rx_factory().subscribe(
+    on_next=lambda x: publish_results_filtered(x, "$.rule_name", "temp-status-propagate")
+)
+results_rx_factory().subscribe(
     on_next=publish_results_errors,
 )
 
@@ -50,7 +53,7 @@ rulesdata = [
             filters: [
                 OnSubjectPropertyChanged("tempc"),
                 IsTrue(lambda self:
-                       float(self.payload.get("value")) < float(self.subject.temp_min)
+                       float(self.payload.get("value")) < float(self.subject.get("temp_min"))
                        ),
             ],
             processing: [
@@ -69,7 +72,7 @@ rulesdata = [
             filters: [
                 OnSubjectPropertyChanged("tempc"),
                 IsTrue(lambda self:
-                       float(self.subject.temp_min) <= float(self.payload.get("value")) < float(self.subject.temp_max)
+                       float(self.subject.get("temp_min")) <= float(self.payload.get("value")) < float(self.subject.get("temp_max"))
                        ),
             ],
             processing: [
@@ -88,7 +91,7 @@ rulesdata = [
             filters: [
                 OnSubjectPropertyChanged("tempc"),
                 IsTrue(lambda self:
-                       float(self.payload.get("value")) >= float(self.subject.temp_max)
+                       float(self.payload.get("value")) >= float(self.subject.get("temp_max"))
                        )
             ],
             processing: [
@@ -106,7 +109,7 @@ rulesdata = [
         subscribe_to: messages.SUBJECT_PROPERTY_CHANGED,
         ruledata: {
             filters: [
-                OnSubjectPropertyChanged("tempc", lambda x: x in "temp_status"),
+                OnSubjectPropertyChanged(lambda x: x in ("temp_status",)),
             ],
             processing: [
                 Route(dispatch_policy=DispatchPolicyConst.DIRECT)

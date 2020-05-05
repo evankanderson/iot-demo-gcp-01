@@ -13,37 +13,39 @@ ruledata = Const.RULEDATA
 filters = Const.FILTERS
 processing = Const.PROCESSING
 
-from krules_core.providers import results_rx_factory
+from krules_core.providers import results_rx_factory, message_router_factory
 from krules_env import publish_results_errors, publish_results_all, publish_results_filtered
 
 # import pprint
 # results_rx_factory().subscribe(
 #     on_next=pprint.pprint
 # )
-results_rx_factory().subscribe(
-    on_next=publish_results_all,
-)
 # results_rx_factory().subscribe(
-#     on_next=publish_results_errors,
+#     on_next=publish_results_all,
 # )
+results_rx_factory().subscribe(
+    on_next=lambda x: publish_results_filtered(x, "$.processed", True)
+)
+results_rx_factory().subscribe(
+    on_next=publish_results_errors,
+)
 
 rulesdata = [
 
     """
-    On status NORMAL notify
+    On status back to NORMAL
     """,
     {
         rulename: "on-temp-status-back-to-normal",
         subscribe_to: messages.SUBJECT_PROPERTY_CHANGED,
         ruledata: {
             filters: [
-                IsTrue(lambda payload: payload["value"] == "NORMAL"),
-                IsFalse(lambda payload: payload["value"] in (None, ))
+                OnSubjectPropertyChanged("temp_status", value="NORMAL", old_value=lambda value: value is not None),
             ],
             processing: [
                 Route(message="temp-status-back-to-normal",
                       dispatch_policy=DispatchPolicyConst.DIRECT),
-                SetSubjectPropertySilently("lastTempStatusChanged", datetime.now().isoformat())
+                SetSubjectPropertySilently("lastTempStatusChanged", lambda: datetime.now().isoformat())
             ],
         },
     },
@@ -56,14 +58,15 @@ rulesdata = [
         subscribe_to: messages.SUBJECT_PROPERTY_CHANGED,
         ruledata: {
             filters: [
-                IsTrue(lambda payload: payload["value"] in ("COLD", "OVERHEATED")),
+                OnSubjectPropertyChanged("temp_status", lambda value: value in ("COLD", "OVERHEATED"))
             ],
             processing: [
+                StoreSubjectPropertySilently("lastTempStatusChanged", lambda: datetime.now().isoformat()),
                 Route(message="temp-status-bad", payload=lambda self: {
-                    "tempc": str(self.subject.tempc),
+                    "tempc": str(self.subject.get("tempc")),
                     "status": self.payload.get("value")
                 }, dispatch_policy=DispatchPolicyConst.DIRECT),
-                SetSubjectProperty("m_lastTempStatusChanged", _(lambda _: datetime.now().isoformat())),
+                SetSubjectPropertySilently("lastTempStatusChanged", lambda: datetime.now().isoformat()),
                 Schedule(message="temp-status-recheck",
                          payload=lambda payload: {"old_value": payload["value"]},
                          when=lambda _: (datetime.now()+timedelta(seconds=30)).isoformat()),
@@ -79,13 +82,13 @@ rulesdata = [
         subscribe_to: "temp-status-recheck",
         ruledata: {
             filters: [
-                IsTrue(lambda self: self.payload.get("old_value") == self.subject.temp_status)
+                IsTrue(lambda self: self.payload.get("old_value") == self.subject.get("temp_status"))
             ],
             processing: [
-                Route(message="temp-status-still-bad", payload=_(lambda _self: {
-                    "status": _self.payload.get("old_value"),
-                    "seconds": (datetime.now() - parse(_self.subject.m_lastTempStatusChanged)).seconds
-                }), dispatch_policy=DispatchPolicyConst.DIRECT),
+                Route(message="temp-status-still-bad", payload=lambda self: {
+                    "status": self.payload.get("old_value"),
+                    "seconds": (datetime.now() - parse(self.subject.get("lastTempStatusChanged"))).seconds
+                }, dispatch_policy=DispatchPolicyConst.DIRECT),
                 Schedule(message="temp-status-recheck",
                          payload=lambda payload: {"old_value": payload["old_value"]},
                          when=lambda _: (datetime.now()+timedelta(seconds=15)).isoformat()),

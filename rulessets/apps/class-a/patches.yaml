@@ -3,3 +3,17 @@ kinds:
 patch:
   spec:
     broker: class-a
+---
+kinds:
+  - serving.knative.dev/v1alpha1:Service
+labelsMatch:
+  - airspot.krules.dev/type: ^rulesset$
+patch:
+  metadata:
+    labels:
+      deviceclass: class-a
+  spec:
+    template:
+      metadata:
+        labels:
+          deviceclass: class-a

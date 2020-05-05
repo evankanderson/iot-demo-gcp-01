@@ -1,7 +1,7 @@
 apiVersion: eventing.knative.dev/v1alpha1
 kind: Trigger
 metadata:
-  name: on-temp-status-change-handler-propchange-temp_status
+  name: on-temp-status-change-handler-propchange-temp-status
 spec:
   filter:
     attributes:

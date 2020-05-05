@@ -14,13 +14,3 @@ spec:
     spec:
       containers:
         - name: rulesset
-          env:
-            - name: GOOGLE_APPLICATION_CREDENTIALS
-              value: /var/secrets/google/key.json
-            - name: WEBSOCKET_DEVICES_NOTIFICATION_RKEY
-              value: "websocket-devices-notification"
-            - name: REDIS_PUBSUB_ADDRESS
-              valueFrom:
-                secretKeyRef:
-                  name: redis-pubsub-address
-                  key: url

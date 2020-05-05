@@ -1,5 +1,6 @@
 import requests
 
+from app_functions import SlackPublishMessage
 from krules_core.base_functions import *
 
 from krules_core import RuleConst as Const
@@ -34,16 +35,13 @@ rulesdata = [
     On status NORMAL notify
     """,
     {
-        rulename: "on-temp-status-back-to-normal-websocket-notifier",
+        rulename: "on-temp-status-back-to-normal-slack-notifier",
         subscribe_to: "temp-status-back-to-normal",
         ruledata: {
             processing: [
-                PyCall(
-                    requests.post,
-                    slack_settings["device_status_change_url"],
-                    json=lambda subject: {
-                        "text": " :sunglasses:  device *{}* temp status back to normal! ".format(subject.name)
-                    }
+                SlackPublishMessage(
+                    channel="devices_channel",
+                    text=lambda subject: " :sunglasses:  device *{}* temp status back to normal! ".format(subject.name)
                 ),
             ],
         },
@@ -53,18 +51,15 @@ rulesdata = [
     Status COLD or OVERHEATED
     """,
     {
-        rulename: "on-temp-status-bad-websocket-notifier",
+        rulename: "on-temp-status-bad-slack-notifier",
         subscribe_to: "temp-status-bad",
         ruledata: {
             processing: [
-                PyCall(
-                    requests.post,
-                    slack_settings["device_status_change_url"],
-                    json=lambda self: {
-                        "text": ":scream:  device *{}* is *{}* ({}°C)".format(
+                SlackPublishMessage(
+                    channel="devices_channel",
+                    text=lambda self: ":scream:  device *{}* is *{}* ({}°C)".format(
                             self.subject.name, self.payload.get("status"), self.payload.get("tempc")
-                        )
-                    }
+                    )
                 ),
            ],
         },
@@ -74,20 +69,17 @@ rulesdata = [
     Recheck
     """,
     {
-        rulename: "on-temp-status-recheck-websocket-notifier",
+        rulename: "on-temp-status-recheck-slack-notifier",
         subscribe_to: "temp-status-still-bad",
         ruledata: {
             processing: [
-                PyCall(
-                    requests.post,
-                    slack_settings["device_status_change_url"],
-                    json=lambda self: {
-                        "text": ":neutral_face: device *{}* is still *{}* from {} secs".format(
+                SlackPublishMessage(
+                    channel="devices_channel",
+                    text=lambda self: ":neutral_face: device *{}* is still *{}* from {} secs".format(
                             self.subject.name,
                             self.payload.get("status"),
                             self.payload.get("seconds")
                         )
-                    }
                 ),
             ],
         },

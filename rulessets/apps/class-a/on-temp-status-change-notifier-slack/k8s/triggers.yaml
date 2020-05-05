@@ -1,7 +1,7 @@
 apiVersion: eventing.knative.dev/v1alpha1
 kind: Trigger
 metadata:
-  name: on-temp-status-change-notifier-slack-type-temp-status-back-to-normal
+  name: on-temp-status-change-notifier-slack-status-back-to-normal
 spec:
   filter:
     attributes:
@@ -15,7 +15,7 @@ spec:
 apiVersion: eventing.knative.dev/v1alpha1
 kind: Trigger
 metadata:
-  name: on-temp-status-change-notifier-slack-type-temp-status-bad
+  name: on-temp-status-change-notifier-slack-status-bad
 spec:
   filter:
     attributes:
@@ -29,7 +29,7 @@ spec:
 apiVersion: eventing.knative.dev/v1alpha1
 kind: Trigger
 metadata:
-  name: on-temp-status-change-notifier-slack-type-temp-status-still-bad
+  name: on-temp-status-change-notifier-slack-status-still-bad
 spec:
   filter:
     attributes:
