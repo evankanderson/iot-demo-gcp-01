@@ -109,7 +109,7 @@ rulesdata = [
         subscribe_to: messages.SUBJECT_PROPERTY_CHANGED,
         ruledata: {
             filters: [
-                OnSubjectPropertyChanged(lambda x: x in ("temp_status",)),
+                OnSubjectPropertyChanged(lambda x: x in ("temp_status", "tempc")),
             ],
             processing: [
                 Route(dispatch_policy=DispatchPolicyConst.DIRECT)

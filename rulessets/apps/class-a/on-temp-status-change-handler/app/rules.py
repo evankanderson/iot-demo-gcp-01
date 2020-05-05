@@ -61,7 +61,6 @@ rulesdata = [
                 OnSubjectPropertyChanged("temp_status", lambda value: value in ("COLD", "OVERHEATED"))
             ],
             processing: [
-                StoreSubjectPropertySilently("lastTempStatusChanged", lambda: datetime.now().isoformat()),
                 Route(message="temp-status-bad", payload=lambda self: {
                     "tempc": str(self.subject.get("tempc")),
                     "status": self.payload.get("value")

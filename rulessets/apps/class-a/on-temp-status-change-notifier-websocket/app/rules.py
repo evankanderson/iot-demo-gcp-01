@@ -69,7 +69,7 @@ rulesdata = [
             processing: [
                 WebsocketDevicePublishMessage(lambda self: {
                     "event": "*{}* ({}°C)".format(
-                        self.payload.get("status"), self.subject.tempc
+                        self.payload.get("status"), self.subject.get("tempc")
                     ),
                     "event_class": WebsocketNotificationEventClass.WARNING,
                 }),

@@ -88,7 +88,7 @@ export default {
   },
   data () {
     return {
-      msg: 'KRules Dashboard',
+      msg: 'Web Socket Simple Client',
       collapsed: false
     }
   },
