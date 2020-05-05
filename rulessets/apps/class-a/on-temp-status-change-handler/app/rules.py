@@ -20,12 +20,12 @@ from krules_env import publish_results_errors, publish_results_all, publish_resu
 # results_rx_factory().subscribe(
 #     on_next=pprint.pprint
 # )
-# results_rx_factory().subscribe(
-#     on_next=publish_results_all,
-# )
 results_rx_factory().subscribe(
-    on_next=lambda x: publish_results_filtered(x, "$.processed", True)
+    on_next=publish_results_all,
 )
+# results_rx_factory().subscribe(
+#     on_next=lambda x: publish_results_filtered(x, "$.processed", True)
+# )
 results_rx_factory().subscribe(
     on_next=publish_results_errors,
 )
@@ -58,7 +58,9 @@ rulesdata = [
         subscribe_to: messages.SUBJECT_PROPERTY_CHANGED,
         ruledata: {
             filters: [
-                OnSubjectPropertyChanged("temp_status", lambda value: value in ("COLD", "OVERHEATED"))
+                #OnSubjectPropertyChanged("temp_status", lambda value: value in ("COLD", "OVERHEATED"))
+                IsTrue(lambda payload: payload[PayloadConst.PROPERTY_NAME] == "temp_status" and
+                                       (payload[PayloadConst.VALUE] == "COLD" or payload[PayloadConst.VALUE] == "OVERHEATED"))
             ],
             processing: [
                 Route(message="temp-status-bad", payload=lambda self: {
@@ -66,9 +68,9 @@ rulesdata = [
                     "status": self.payload.get("value")
                 }, dispatch_policy=DispatchPolicyConst.DIRECT),
                 SetSubjectPropertySilently("lastTempStatusChanged", lambda: datetime.now().isoformat()),
-                Schedule(message="temp-status-recheck",
-                         payload=lambda payload: {"old_value": payload["value"]},
-                         when=lambda _: (datetime.now()+timedelta(seconds=30)).isoformat()),
+                    Schedule(message="temp-status-recheck",
+                             payload=lambda payload: {"old_value": payload["value"]},
+                             when=lambda _: (datetime.now()+timedelta(seconds=30)).isoformat()),
             ],
         },
     },
