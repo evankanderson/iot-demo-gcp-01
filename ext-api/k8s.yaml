@@ -27,6 +27,8 @@ spec:
               value : kr-demo
             - name: CLOUD_SQL_CONNECTION_NAME
               value: krules-dev-254113:europe-west4:pg-dev-01
+            - name: FORCE_SERVICE_UNAVAILABLE
+              value: "False"
           volumeMounts:
               - name: ext-api-secret-volume
                 mountPath: "/var/secrets/ext-api"

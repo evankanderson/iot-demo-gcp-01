@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: extapi-server
 data:
-  url: https://europe-west3-krules-dev-254113.cloudfunctions.net/store_devices_location
+  url: http://ext-api #https://europe-west3-krules-dev-254113.cloudfunctions.net/store_devices_location
 ---
