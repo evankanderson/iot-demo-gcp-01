@@ -7,7 +7,7 @@ WORKDIR /app
 # Copy the current directory contents into the container at /app
 ADD . /app
 
-RUN pip install flask json-logging SQLAlchemy==1.3.13 gunicorn -r requirements.txt
+RUN pip install flask json-logging SQLAlchemy==1.3.13 pg8000==1.13.2 gunicorn
 
 
 ENV FLASK_APP /app/main.py
