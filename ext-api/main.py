@@ -50,7 +50,7 @@ def main():
     logger.debug(db)
     logger.debug(request.json)
 
-    if eval(os.environ.get("FORCE_SERVICE_UNAVAILABLE", False)):
+    if eval(os.environ.get("FORCE_SERVICE_UNAVAILABLE", "False")):
         return "PG Down", 503
 
     try:

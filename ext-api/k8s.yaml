@@ -12,6 +12,9 @@ spec:
         - name: ext-api
           image: "eu.gcr.io/krules-dev-254113/ext-api:0.1"
           imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              protocol: TCP
           env:
             - name: DB_USER
               valueFrom:
