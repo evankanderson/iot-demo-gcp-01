@@ -29,10 +29,17 @@ spec:
               value: krules-dev-254113:europe-west4:pg-dev-01
             - name: FORCE_SERVICE_UNAVAILABLE
               value: "False"
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/key.json
           volumeMounts:
-              - name: ext-api-secret-volume
-                mountPath: "/var/secrets/ext-api"
+            - name: ext-api-secret-volume
+              mountPath: "/var/secrets/ext-api"
+            - name: google-cloud-key
+              mountPath: /var/secrets/google
       volumes:
         - name: ext-api-secret-volume
           secret:
             secretName: ext-api-secret
+        - name: google-cloud-key
+          secret:
+            secretName: google-cloud-key
