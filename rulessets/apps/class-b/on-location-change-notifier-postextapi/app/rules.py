@@ -19,13 +19,13 @@ from krules_core.providers import results_rx_factory
 from krules_env import publish_results_errors, publish_results_all, publish_results_filtered
 import requests
 
-import pprint
-results_rx_factory().subscribe(
-    on_next=pprint.pprint
-)
+# import pprint
 # results_rx_factory().subscribe(
-#     on_next=publish_results_all,
+#     on_next=pprint.pprint
 # )
+results_rx_factory().subscribe(
+    on_next=publish_results_all,
+)
 # results_rx_factory().subscribe(
 #     on_next=publish_results_errors,
 # )
@@ -65,7 +65,7 @@ rulesdata = [
                             "location": self.payload["value"],
                         }
                     }
-                })
+                }, dispatch_policy=DispatchPolicyConst.NEVER)
             ],
         },
     },
@@ -79,7 +79,7 @@ rulesdata = [
         ruledata: {
             processing: [
                 PostExtApi(
-                    url=lambda payload: payload["url"],
+                    url= lambda payload: payload["url"],
                     req_kwargs=lambda payload: payload["req_kwargs"],
                     on_response=lambda self, resp: (
                         resp.raise_for_status(),
@@ -95,22 +95,22 @@ rulesdata = [
     """
     Manage exception
     """,
-    {
-        rulename: "on-do-extapi-post-errors",
-        subscribe_to: "{}-errors".format(os.environ["K_SERVICE"]),
-        ruledata: {
-            filters: [
-                IsTrue(lambda payload:
-                       payload.get("rule_name") == "on-do-extapi-post" and
-                       jp.match1("$.processing[*].exception", payload) == "requests.exceptions.HTTPError" and
-                       jp.match1("$.processing[*].exc_extra_info.response_code", payload) == 503)
-            ],
-            processing: [
-                Schedule(message="do-extapi-post",
-                         payload=lambda payload: payload["payload"],
-                         when=lambda _: (datetime.now() + timedelta(seconds=30)).isoformat()),
-            ]
-        }
-    }
+    # {
+    #     rulename: "on-do-extapi-post-errors",
+    #     subscribe_to: "{}-errors".format(os.environ["K_SERVICE"]),
+    #     ruledata: {
+    #         filters: [
+    #             IsTrue(lambda payload:
+    #                    payload.get("rule_name") == "on-do-extapi-post" and
+    #                    jp.match1("$.processing[*].exception", payload) == "requests.exceptions.HTTPError" and
+    #                    jp.match1("$.processing[*].exc_extra_info.response_code", payload) == 503)
+    #         ],
+    #         processing: [
+    #             Schedule(message="do-extapi-post",
+    #                      payload=lambda payload: payload["payload"],
+    #                      when=lambda _: (datetime.now() + timedelta(seconds=30)).isoformat()),
+    #         ]
+    #     }
+    # }
 
 ]

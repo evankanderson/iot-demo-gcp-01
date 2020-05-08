@@ -27,7 +27,6 @@ def main():
     db_user = os.environ["DB_USER"]
     db_pass = os.environ["DB_PASSWORD"]
     db_name = os.environ["DB_NAME"]
-    cloud_sql_connection_name = os.environ["CLOUD_SQL_CONNECTION_NAME"]
 
     db = sqlalchemy.create_engine(
         sqlalchemy.engine.url.URL(
@@ -36,11 +35,9 @@ def main():
             password=db_pass,
             database=db_name,
             query={
-                'host': '/cloudsql/{}/'.format(
-                    cloud_sql_connection_name)
+                'host': 'postgresql-master'
             }
         ),
-        # ... Specify additional properties here.
         pool_size=5,
         max_overflow=2,
         pool_timeout=30,
