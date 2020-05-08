@@ -1,7 +1,7 @@
 apiVersion: serving.knative.dev/v1alpha1
 kind: Service
 metadata:
-  name: ext-api
+  name: ext-api-server
 spec:
   template:
     metadata:
@@ -9,12 +9,9 @@ spec:
         autoscaling.knative.dev/minScale: "1"
     spec:
       containers:
-        - name: ext-api
+        - name: ext-api-server
           image: "eu.gcr.io/krules-dev-254113/ext-api:0.1"
           imagePullPolicy: IfNotPresent
-          ports:
-            - containerPort: 8080
-              protocol: TCP
           env:
             - name: DB_USER
               valueFrom:
@@ -28,21 +25,12 @@ spec:
                   key: password
             - name: DB_NAME
               value : kr-demo
-            - name: CLOUD_SQL_CONNECTION_NAME
-              value: krules-dev-254113:europe-west4:pg-dev-01
             - name: FORCE_SERVICE_UNAVAILABLE
               value: "False"
-            - name: GOOGLE_APPLICATION_CREDENTIALS
-              value: /var/secrets/google/key.json
           volumeMounts:
             - name: ext-api-secret-volume
               mountPath: "/var/secrets/ext-api"
-            - name: google-cloud-key
-              mountPath: /var/secrets/google
       volumes:
         - name: ext-api-secret-volume
           secret:
             secretName: ext-api-secret
-        - name: google-cloud-key
-          secret:
-            secretName: google-cloud-key
