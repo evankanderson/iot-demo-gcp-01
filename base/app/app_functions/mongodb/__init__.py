@@ -56,6 +56,17 @@ class WithCollection(RuleFunctionBase):
         if exec_func is not None:
             exec_func(db[collection], self)
 
+class MongoDBBulkWrite(RuleFunctionBase):
+
+    def execute(self, *args, **kwargs):
+
+        dbinfo = self.payload.get('_mongodb', {})
+        database = get_dbname(dbinfo)
+        collection = dbinfo.get("collection", os.environ.get("MONGODB_DEFAULT_COLLECTION", "default"))
+        payload_dest = kwargs.pop("payload_dest", "mongodb_bulk_api_result")
+        result = get_client()[database][collection].bulk_write(*args, **kwargs)
+        self.payload[payload_dest] = result.bulk_api_result
+
 
 class MongoDBInsertOne(RuleFunctionBase):
 

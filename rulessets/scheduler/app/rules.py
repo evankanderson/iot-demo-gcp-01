@@ -3,7 +3,7 @@ import os
 
 from dateutil.parser import parse
 from app_functions.mongodb import set_client as set_mongodb_client
-from app_functions.mongodb import WithDatabase, WithCollection, MongoDBFind, MongoDBDeleteByIds
+from app_functions.mongodb import WithDatabase, WithCollection, MongoDBFind, MongoDBDeleteByIds, MongoDBBulkWrite
 
 from krules_core.base_functions import *
 
@@ -23,9 +23,9 @@ from krules_env import publish_results_errors, publish_results_all, publish_resu
 # results_rx_factory().subscribe(
 #     on_next=pprint.pprint
 # )
-# results_rx_factory().subscribe(
-#     on_next=publish_results_all,
-# )
+results_rx_factory().subscribe(
+    on_next=publish_results_all,
+)
 results_rx_factory().subscribe(
     on_next=publish_results_errors,
 )
@@ -34,9 +34,10 @@ results_rx_factory().subscribe(
 # )
 
 # results_rx_factory().subscribe(
-#     on_next=lambda result: publish_results_filtered(result, "$.._ids_deleted_count", lambda x: x and x > 0)
+#     on_next=lambda result: publish_results_filtered(result, "$..mongodb_bulk_api_result", lambda x: len(x))
 # )
 
+from pymongo import InsertOne, DeleteMany, ReplaceOne, UpdateOne
 
 DATABASE = os.environ.get("MONGODB_DATABASE")
 COLLECTION = os.environ.get("MONGODB_COLLECTION")
@@ -50,32 +51,56 @@ set_mongodb_client(
 rulesdata = [
 
     """
+    Store schedule info (no replace)
+    """,
+    {
+        rulename: "on-schedule-received-no-replace",
+        subscribe_to: "schedule-message",
+        ruledata: {
+            filters: [
+                IsFalse(lambda payload: payload.get("replace", False))
+            ],
+            processing: [
+                WithDatabase(DATABASE),
+                WithCollection(COLLECTION, indexes=INDEXES,
+                               exec_func=lambda c, self: (
+                                   c.insert_one({
+                                       "message": self.payload["message"],
+                                       "subject": self.payload["subject"],
+                                       "payload": self.payload["payload"],
+                                       "_when": parse(self.payload["when"])
+                                   }))
+                               )
+            ]
+        },
+    },
+
+    """
     Store schedule info
     """,
     {
         rulename: "on-schedule-received",
         subscribe_to: "schedule-message",
         ruledata: {
+            filters: [
+                IsTrue(lambda payload: payload.get("replace", False))
+            ],
             processing: [
                 WithDatabase(DATABASE),
-                WithCollection(COLLECTION, indexes=INDEXES,
-                               exec_func=lambda c, self: (
-                                       self.payload.get("replace") and c.delete_many({
-                                           "message": self.payload["message"],
-                                           "subject": self.payload["subject"],
-                                       }),
-                                       c.insert_one({
-                                           "message": self.payload["message"],
-                                           "subject": self.payload["subject"],
-                                           "payload": self.payload["payload"],
-                                           "_when": parse(self.payload["when"])
-                                       })
-                                   )
-                               )
+                WithCollection(COLLECTION, indexes=INDEXES),
+                MongoDBBulkWrite(lambda payload: [
+                                 UpdateOne({
+                                     "message": payload["message"],
+                                     "subject": payload["subject"],
+                                 }, {"$set": {
+                                     "message": payload["message"],
+                                     "subject": payload["subject"],
+                                     "payload": payload["payload"],
+                                     "_when": parse(payload["when"])
+                                 }}, upsert=True)])
             ]
         },
     },
-
     """
     Do schedules
     """,
