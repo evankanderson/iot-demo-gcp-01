@@ -25,3 +25,5 @@ spec:
                 configmapKeyRef:
                   name: extapi-server
                   key: url
+            - name: CORE_LOGGING_LEVEL
+              value: "10"

@@ -13,7 +13,7 @@ json_logging.init_flask()
 json_logging.init_request_instrument(app)
 
 logger = logging.getLogger(app.name)
-logger.setLevel(int(os.environ.get("LOGGING_LEVEL", logging.INFO)))
+logger.setLevel(int(os.environ.get("LOGGING_LEVEL", logging.DEBUG)))
 logger.addHandler(logging.StreamHandler(sys.stdout))
 logger.propagate = False
 
@@ -27,7 +27,6 @@ def main():
     db_user = os.environ["DB_USER"]
     db_pass = os.environ["DB_PASSWORD"]
     db_name = os.environ["DB_NAME"]
-    cloud_sql_connection_name = os.environ["CLOUD_SQL_CONNECTION_NAME"]
 
     db = sqlalchemy.create_engine(
         sqlalchemy.engine.url.URL(
@@ -36,11 +35,9 @@ def main():
             password=db_pass,
             database=db_name,
             query={
-                'unix_sock': '/cloudsql/{}/.s.PGSQL.5432'.format(
-                    cloud_sql_connection_name)
+                'host': 'postgresql-master'
             }
         ),
-        # ... Specify additional properties here.
         pool_size=5,
         max_overflow=2,
         pool_timeout=30,
@@ -65,5 +62,6 @@ def main():
             conn.execute(statement)
 
         return "Ok", 200
-    except Exception:
+    except Exception as ex:
+        logger.debug(str(ex))
         return "PG Down", 503
