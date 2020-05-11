@@ -111,10 +111,10 @@ rulesdata = [
             processing: [
                 Schedule(
                     message="do-extapi-post",
-                    # subject=lambda payload: hashlib.md5(
-                    #     "{}{}".format(payload["payload"]["req_kwargs"]["json"]["device"],
-                    #                   payload["payload"]["req_kwargs"]["json"]["timestamp"]
-                    #                   ).encode('utf-8')).hexdigest(),
+                    schedule_hash=lambda payload: hashlib.md5(
+                        "{}{}".format(payload["payload"]["req_kwargs"]["json"]["device"],
+                                      payload["payload"]["req_kwargs"]["json"]["timestamp"]
+                                      ).encode('utf-8')).hexdigest(),
                     payload=lambda payload: payload["payload"],
                     when=lambda _: (datetime.now() + timedelta(seconds=10)).isoformat(), replace=True),
             ]
