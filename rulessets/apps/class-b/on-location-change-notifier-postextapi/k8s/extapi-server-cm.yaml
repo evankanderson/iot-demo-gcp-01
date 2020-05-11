@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: extapi-server
 data:
-  url: http://extapi-server
+  url: http://extapi-server.iot-demo-gcp-01.svc.cluster.local
 ---

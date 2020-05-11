@@ -1,3 +1,4 @@
+import hashlib
 import os
 from datetime import datetime, timedelta
 
@@ -26,6 +27,8 @@ import requests
 results_rx_factory().subscribe(
     on_next=publish_results_all,
 )
+
+
 # results_rx_factory().subscribe(
 #     on_next=publish_results_errors,
 # )
@@ -57,14 +60,14 @@ rulesdata = [
                     "url": os.environ["EXTAPI_URL"],
                     # https://europe-west3-krules-dev-254113.cloudfunctions.net/store_devices_location
                     "req_kwargs": {
-                        "headers": {},# {"x-api-key": os.environ["EXTAPI_X_API_KEY"]},
+                        "headers": {},  # {"x-api-key": os.environ["EXTAPI_X_API_KEY"]},
                         "json": {
                             "device": self.subject.name,
                             "timestamp": datetime.utcnow().replace(tzinfo=pytz.UTC).isoformat(),
                             "coords": self.subject.get("coords"),
                             "location": self.payload["value"],
                         }
-                    }
+                    },
                 }, dispatch_policy=DispatchPolicyConst.NEVER)
             ],
         },
@@ -79,7 +82,7 @@ rulesdata = [
         ruledata: {
             processing: [
                 PostExtApi(
-                    url= lambda payload: payload["url"],
+                    url=lambda payload: payload["url"],
                     req_kwargs=lambda payload: payload["req_kwargs"],
                     on_response=lambda self, resp: (
                         resp.raise_for_status(),
@@ -95,22 +98,27 @@ rulesdata = [
     """
     Manage exception
     """,
-    # {
-    #     rulename: "on-do-extapi-post-errors",
-    #     subscribe_to: "{}-errors".format(os.environ["K_SERVICE"]),
-    #     ruledata: {
-    #         filters: [
-    #             IsTrue(lambda payload:
-    #                    payload.get("rule_name") == "on-do-extapi-post" and
-    #                    jp.match1("$.processing[*].exception", payload) == "requests.exceptions.HTTPError" and
-    #                    jp.match1("$.processing[*].exc_extra_info.response_code", payload) == 503)
-    #         ],
-    #         processing: [
-    #             Schedule(message="do-extapi-post",
-    #                      payload=lambda payload: payload["payload"],
-    #                      when=lambda _: (datetime.now() + timedelta(seconds=30)).isoformat()),
-    #         ]
-    #     }
-    # }
+    {
+        rulename: "on-do-extapi-post-errors",
+        subscribe_to: "{}-errors".format(os.environ["K_SERVICE"]),
+        ruledata: {
+            filters: [
+                IsTrue(lambda payload:
+                       payload.get("rule_name") == "on-do-extapi-post" and
+                       jp.match1("$.processing[*].exception", payload) == "requests.exceptions.HTTPError" and
+                       jp.match1("$.processing[*].exc_extra_info.response_code", payload) == 503)
+            ],
+            processing: [
+                Schedule(
+                    message="do-extapi-post",
+                    # subject=lambda payload: hashlib.md5(
+                    #     "{}{}".format(payload["payload"]["req_kwargs"]["json"]["device"],
+                    #                   payload["payload"]["req_kwargs"]["json"]["timestamp"]
+                    #                   ).encode('utf-8')).hexdigest(),
+                    payload=lambda payload: payload["payload"],
+                    when=lambda _: (datetime.now() + timedelta(seconds=10)).isoformat(), replace=True),
+            ]
+        }
+    }
 
 ]
