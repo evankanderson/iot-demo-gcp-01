@@ -11,3 +11,18 @@ spec:
       apiVersion: serving.knative.dev/v1alpha1
       kind: Service
       name: on-data-received-set-temp-status
+---
+apiVersion: eventing.knative.dev/v1alpha1
+kind: Trigger
+metadata:
+  name: on-propchange-tempc
+spec:
+  filter:
+    attributes:
+      type: subject-property-changed
+      propertyname: tempc
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1alpha1
+      kind: Service
+      name: on-data-received-set-temp-status

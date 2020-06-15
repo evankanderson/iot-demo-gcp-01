@@ -14,23 +14,25 @@ spec:
           imagePullPolicy: IfNotPresent
           env:
             - name: DB_USER
-              valueFrom:
-                secretKeyRef:
-                  name: extapi-secret
-                  key: username
+              value: kr-demo
+#              valueFrom:
+#                secretKeyRef:
+#                  name: extapi-secret
+#                  key: username
             - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: extapi-secret
-                  key: password
+              value: adM8850btz
+#              valueFrom:
+#                secretKeyRef:
+#                  name: extapi-secret
+#                  key: password
             - name: DB_NAME
               value : kr-demo
             - name: FORCE_SERVICE_UNAVAILABLE
               value: "False"
-          volumeMounts:
-            - name: extapi-secret-volume
-              mountPath: "/var/secrets/ext-api"
-      volumes:
-        - name: extapi-secret-volume
-          secret:
-            secretName: extapi-secret
+#          volumeMounts:
+#            - name: extapi-secret-volume
+#              mountPath: "/var/secrets/ext-api"
+#      volumes:
+#        - name: extapi-secret-volume
+#          secret:
+#            secretName: extapi-secret

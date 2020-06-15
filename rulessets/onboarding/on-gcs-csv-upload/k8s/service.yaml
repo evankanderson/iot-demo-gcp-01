@@ -17,6 +17,12 @@ spec:
           env:
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /var/secrets/google/key.json
+            - name: LOGGING_LEVEL
+              value: "10"
+#            - name: CORE_LOGGING_LEVEL
+#              value: "10"
+#            - name: ROUTER_LOGGING_LEVEL
+#              value: "10"
           volumeMounts:
             - name: google-cloud-key
               mountPath: /var/secrets/google

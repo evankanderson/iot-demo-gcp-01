@@ -23,9 +23,9 @@ from krules_env import publish_results_errors, publish_results_all, publish_resu
 # results_rx_factory().subscribe(
 #     on_next=pprint.pprint
 # )
-results_rx_factory().subscribe(
-    on_next=publish_results_all,
-)
+# results_rx_factory().subscribe(
+#     on_next=publish_results_all,
+# )
 results_rx_factory().subscribe(
     on_next=publish_results_errors,
 )
