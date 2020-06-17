@@ -10,9 +10,11 @@ spec:
     spec:
       containers:
         - name: extapi-server
-          image: "eu.gcr.io/krules-dev-254113/ext-api:0.1"
+          image: "eu.gcr.io/krules-dev-254113/ext-api:0.2"
           imagePullPolicy: IfNotPresent
           env:
+            - name: DB_HOST
+              value: postgresql-master.kube-public
             - name: DB_USER
               value: kr-demo
 #              valueFrom:
