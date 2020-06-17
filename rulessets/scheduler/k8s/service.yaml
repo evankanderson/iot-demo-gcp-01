@@ -22,8 +22,6 @@ spec:
                 secretKeyRef:
                   name: config-krules-mongodb-auth
                   key: password
-            - name: MONGODB_DATABASE
-              value: scheduler
             - name: MONGODB_COLLECTION
               value: scheduled
           volumeMounts:

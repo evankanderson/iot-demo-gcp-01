@@ -39,11 +39,12 @@ results_rx_factory().subscribe(
 
 from pymongo import InsertOne, DeleteMany, ReplaceOne, UpdateOne
 
-DATABASE = os.environ.get("MONGODB_DATABASE")
+mongodb_settings = settings_factory().get("apps").get("mongodb")
+
+DATABASE = os.environ.get("MONGODB_DATABASE", mongodb_settings.get("database"))
 COLLECTION = os.environ.get("MONGODB_COLLECTION")
 
 INDEXES = [IndexModel([("message", TEXT), ("subject", TEXT)])]
-mongodb_settings = settings_factory().get("apps").get("mongodb")
 set_mongodb_client(
     MongoClient(*mongodb_settings.get("client_args", ()), **mongodb_settings.get("client_kwargs", {}))
 )

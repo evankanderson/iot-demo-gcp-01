@@ -1,7 +1,6 @@
 resources:
 #- cpulimits.yaml
 - redis-server.yaml
-- mongodb-server.yaml
 - config-krules.yaml
 - brokers.yaml
 - event-display.yaml

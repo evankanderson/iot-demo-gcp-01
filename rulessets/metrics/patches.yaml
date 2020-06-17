@@ -21,8 +21,6 @@ patch:
                     secretKeyRef:
                       name: config-krules-mongodb-auth
                       key: password
-                - name: MONGODB_DATABASE
-                  value: metrics
               volumeMounts:
                 - name: config-krules-mongodb-volume
                   mountPath: /krules/config/apps/mongodb
