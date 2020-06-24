@@ -27,6 +27,7 @@ def main():
     db_user = os.environ["DB_USER"]
     db_pass = os.environ["DB_PASSWORD"]
     db_name = os.environ["DB_NAME"]
+    db_host = os.environ["DB_HOST"]
 
     db = sqlalchemy.create_engine(
         sqlalchemy.engine.url.URL(
@@ -35,7 +36,7 @@ def main():
             password=db_pass,
             database=db_name,
             query={
-                'host': 'postgresql-master'
+                'host': db_host
             }
         ),
         pool_size=5,

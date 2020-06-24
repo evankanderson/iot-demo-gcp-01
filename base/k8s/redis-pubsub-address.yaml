@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  url: cmVkaXM6Ly9yZWRpcy1tYXN0ZXIvMQ==
+kind: Secret
+metadata:
+  name: redis-pubsub-address
+type: Opaque

@@ -5,9 +5,9 @@ metadata:
 data:
   config_subjects_mongodb.yaml: |
     client_args:
-      - database
+      - mongodb.kube-public
     client_kwargs:
       authSource: admin
-      username: admin
+      username: iot-demo-gcp-01
       password: $MONGODB_PASSWORD
     database: iot-demo-gcp-01

@@ -1,8 +1,6 @@
 resources:
 #- cpulimits.yaml
 - redis-server.yaml
-- mongodb-server.yaml
-- pg-server.yaml
 - config-krules.yaml
 - brokers.yaml
 - event-display.yaml
@@ -13,3 +11,4 @@ resources:
 - config-slack-web-hooks.yaml
 - config-krules-mongodb.yaml
 - config-krules-mongodb-auth.yaml
+- redis-pubsub-address.yaml

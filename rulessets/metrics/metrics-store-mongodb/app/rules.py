@@ -32,7 +32,7 @@ set_mongodb_client(
     MongoClient(*mongodb_settings.get("client_args", ()), **mongodb_settings.get("client_kwargs", {}))
 )
 
-DATABASE = os.environ.get("MONGODB_DATABASE")
+DATABASE = os.environ.get("MONGODB_DATABASE", mongodb_settings.get("database"))
 COLLECTION_RAW = os.environ.get("MONGODB_COLLECTION_RAW")
 COLLECTION_ERRORS = os.environ.get("MONGODB_COLLECTION_ERRORS")
 

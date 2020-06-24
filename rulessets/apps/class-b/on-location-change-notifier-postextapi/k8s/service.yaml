@@ -21,9 +21,6 @@ spec:
 #                  name: extapi-server
 #                  key: api-key
             - name: EXTAPI_URL
-              valueFrom:
-                configmapKeyRef:
-                  name: extapi-server
-                  key: url
+              value: http://extapi-server.iot-demo-gcp-01
             - name: CORE_LOGGING_LEVEL
               value: "10"

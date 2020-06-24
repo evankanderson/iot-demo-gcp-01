@@ -1,5 +1,6 @@
 kinds:
   - serving.knative.dev/v1alpha1:Service
+  - serving.knative.dev/v1beta1:Service
   - apps/v1:Deployment
 labelsMatch:
   - airspot.krules.dev/type: ^rulesset$
@@ -48,6 +49,7 @@ patch:
 
 # Redis subjects backend
 kinds:
+  - serving.knative.dev/v1beta1:Service
   - serving.knative.dev/v1alpha1:Service
 labelsMatch:
   - airspot.krules.dev/type: ^rulesset$

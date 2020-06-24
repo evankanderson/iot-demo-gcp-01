@@ -1,13 +1,11 @@
-apiVersion: eventing.knative.dev/v1alpha1
+apiVersion: eventing.knative.dev/v1beta1
 kind: Trigger
 metadata:
-  
   name: on-onboard-device-type-onboard-device
   
 spec:
   filter:
     attributes:
-      
       type: onboard-device
       
   subscriber:
