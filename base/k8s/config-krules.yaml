@@ -5,4 +5,4 @@ metadata:
 data:
   config_krules.yaml: |
     CLOUDEVENTS:
-      send_to: http://default-broker
+      send_to: http://broker-ingress.knative-eventing.svc.cluster.local/iot-demo-gcp-01/default

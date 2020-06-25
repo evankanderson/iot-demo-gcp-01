@@ -1,6 +1,6 @@
 apiVersion: v1
 data:
-  url: cmVkaXM6Ly9yZWRpcy1tYXN0ZXIvMQ==
+  url: cmVkaXM6Ly9yZWRpcy1tYXN0ZXIua3ViZS1wdWJsaWMvMQ==
 kind: Secret
 metadata:
   name: redis-pubsub-address

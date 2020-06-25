@@ -66,7 +66,6 @@ rulesdata = [
                 WithCollection(COLLECTION, indexes=INDEXES,
                                exec_func=lambda c, self: (
                                    c.insert_one({
-                                       "hash": self.payload["hash"],
                                        "message": self.payload["message"],
                                        "subject": self.payload["subject"],
                                        "payload": self.payload["payload"],
@@ -92,11 +91,11 @@ rulesdata = [
                 WithCollection(COLLECTION, indexes=INDEXES),
                 MongoDBBulkWrite(lambda payload: [
                                  UpdateOne({
-                                     "hash": payload["hash"],
+                                     "message": payload["message"],
+                                     "subject": payload["subject"],
                                  }, {"$set": {
                                      "message": payload["message"],
                                      "subject": payload["subject"],
-                                     "hash": payload["hash"],
                                      "payload": payload["payload"],
                                      "_when": parse(payload["when"])
                                  }}, upsert=True)])

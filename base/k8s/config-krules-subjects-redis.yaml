@@ -4,4 +4,4 @@ metadata:
   name: config-krules-subjects-redis
 data:
   config_subjects_redis.yaml: |
-    url: redis://redis-master/0
+    url: redis://redis-master.kube-public/0

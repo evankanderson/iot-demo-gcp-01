@@ -15,29 +15,20 @@ from krules_core.providers import subject_factory, message_router_factory, setti
 
 class Schedule(RuleFunctionBase):
 
-    def execute(self, message=None, subject=None, schedule_hash=None, payload=None, when=lambda _: datetime.now(),
-                replace=False):
-
+    def execute(self, message=None, subject=None, payload=None, hash=None, when=lambda _: datetime.now(), replace=False):
         if message is None:
             message = self.message
         if subject is None:
             subject = self.subject
-        if schedule_hash is None:
-            schedule_hash = hashlib.md5("{}__{}".format(message, subject).encode('utf-8')).hexdigest()
         if payload is None:
             payload = self.payload
-
         if str(self.subject) != str(subject):
             subject = subject_factory(str(subject), event_info=self.subject.event_info())
-
         if callable(when):
             when = when(self)
         if type(when) is not str:
             when = when.isoformat()
-
-        new_payload = {"message": message, "subject": str(subject), "payload": payload, "when": when,
-                       "replace": replace, "hash": schedule_hash}
-
+        new_payload = {"message": message, "subject": str(subject), "payload": payload, "when": when, "replace": replace}
         message_router_factory().route("schedule-message", subject, new_payload,
                                        dispatch_policy=DispatchPolicyConst.DIRECT)
 
