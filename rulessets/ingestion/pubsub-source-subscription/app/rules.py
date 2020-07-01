@@ -48,7 +48,7 @@ rulesdata = [
                 Route("data-received",                                  # message
                       lambda payload: payload["data"].pop("deviceid"),  # subject
                       lambda payload: {                                 # payload
-                          "receivedAt": payload["_event_info"]["Time"],
+                          "receivedAt": payload["_event_info"]["time"],
                           "data": payload["data"]
                       }),
             ],

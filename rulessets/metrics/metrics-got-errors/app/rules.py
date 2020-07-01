@@ -41,7 +41,7 @@ rulesdata = [
             ],
             processing: [
                 Route(
-                    lambda payload: "{}-errors".format(payload["_event_info"]["Source"]),
+                    lambda payload: "{}-errors".format(payload["_event_info"]["source"]),
                     lambda payload: payload["subject"],
                     lambda payload: payload
                 )
@@ -64,7 +64,7 @@ rulesdata = [
                     channel="errors",
                     text=lambda payload:
                     ":ambulance: *{}[{}]* \n```\n{}\n```".format(
-                        payload["_event_info"]["Source"],
+                        payload["_event_info"]["source"],
                         payload["rule_name"],
                         "\n".join(jp.match1("$.processing[*].exc_info", payload))
                     )
