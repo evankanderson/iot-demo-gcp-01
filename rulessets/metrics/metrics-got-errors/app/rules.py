@@ -41,7 +41,7 @@ rulesdata = [
             ],
             processing: [
                 Route(
-                    lambda payload: "{}-errors".format(payload["_event_info"]["source"]),
+                    lambda subject: "{}-errors".format(subject.event_info()["source"]),
                     lambda payload: payload["subject"],
                     lambda payload: payload
                 )
@@ -62,11 +62,11 @@ rulesdata = [
             processing: [
                 SlackPublishMessage(
                     channel="errors",
-                    text=lambda payload:
+                    text=lambda self:
                     ":ambulance: *{}[{}]* \n```\n{}\n```".format(
-                        payload["_event_info"]["source"],
-                        payload["rule_name"],
-                        "\n".join(jp.match1("$.processing[*].exc_info", payload))
+                        self.subject.event_info()["source"],
+                        self.payload["rule_name"],
+                        "\n".join(jp.match1("$.processing[*].exc_info", self.payload))
                     )
                 ),
             ]

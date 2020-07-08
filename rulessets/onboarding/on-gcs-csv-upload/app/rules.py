@@ -17,15 +17,16 @@ from app_functions.cloudstorage import DeleteBlob
 
 
 import pprint
-results_rx_factory().subscribe(
-    on_next=pprint.pprint
-)
+# results_rx_factory().subscribe(
+#     on_next=pprint.pprint
+# )
 results_rx_factory().subscribe(
     on_next=lambda result: publish_results_filtered(result, "$.processed", True)
 )
 # results_rx_factory().subscribe(
 #     on_next=publish_results_errors,
 # )
+
 
 rulesdata = [
 

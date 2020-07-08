@@ -16,7 +16,7 @@ from app_functions.mongodb import WithDatabase, WithCollection, MongoDBInsertOne
 from dateutil.parser import parse
 from pymongo import IndexModel, HASHED, MongoClient
 
-# import pprint
+import pprint
 # results_rx_factory().subscribe(
 #     on_next=pprint.pprint
 # )
@@ -50,8 +50,8 @@ rulesdata = [
                 WithCollection(COLLECTION_RAW,
                                indexes=[IndexModel([("origin_id", HASHED)])],
                                capped=True, size=1000000),
-                SetPayloadProperty("origin_id", lambda payload: payload["payload"]["_event_info"]["originid"]),
-                SetPayloadProperty("time", lambda payload: parse(payload["payload"]["_event_info"]["time"])),
+                SetPayloadProperty("origin_id", lambda payload: payload["event_info"]["originid"]),
+                SetPayloadProperty("time", lambda payload: parse(payload["event_info"]["time"])),
                 MongoDBInsertOne(lambda payload: payload),
             ],
         },
@@ -72,8 +72,8 @@ rulesdata = [
                 WithCollection(COLLECTION_ERRORS,
                                indexes=[IndexModel([("origin_id", HASHED)])],
                                capped=True, size=1000000),
-                SetPayloadProperty("origin_id", lambda payload: payload["payload"]["_event_info"]["originid"]),
-                SetPayloadProperty("time", lambda payload: parse(payload["payload"]["_event_info"]["time"])),
+                SetPayloadProperty("origin_id", lambda payload: payload["event_info"]["originid"]),
+                SetPayloadProperty("time", lambda payload: parse(payload["event_info"]["time"])),
                 CheckPayloadMatchOne("*[?(@.exception)]", payload_dest="function"),
                 MongoDBInsertOne(lambda payload: {
                     "origin_id": payload["origin_id"],
@@ -82,6 +82,7 @@ rulesdata = [
                     "subject": payload["subject"],
                     "rule_name": payload["rule_name"],
                     "function": payload["function"],
+                    "event_info": payload["event_info"]
                 }),
             ],
         },
